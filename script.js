@@ -71,6 +71,7 @@ function checkOverRange() {
 
 
 
+
 function checkUnderRange() {
     if (letter_page === 0) {
         return;
