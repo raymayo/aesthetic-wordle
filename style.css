@@ -1,7 +1,14 @@
+:root{
+    --background: #faf4ed;
+    --textColor: #393552;
+    --bg2: #dfdad9;
+}
+
 *{
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    color: var(--textColor);
 }
 
 /* body{
@@ -14,7 +21,7 @@ main{
     height: 100%;
     top: 0;
     left: 0;
-    background: #FEF9FF;
+    background: var(--background);
     display: grid;
     place-items: center;
     /* place-content: center; */
@@ -42,14 +49,14 @@ main{
 }
 
 .letter-container {
-    background-color: #FEF9FF;
-    border: solid 1px #121212;
+    background-color: var(--bg2);
+    /* border: solid 1px var(--textColor); */
     border-radius: 8px;
     font-family: Helvetica;
     font-size: 2.5rem;
     font-weight: 700;
     text-align: center;
-    padding-top: 12%;
+    padding-top: 15%;
 }
 
 #check{
@@ -62,13 +69,14 @@ header{
     position: fixed;
     top: 0;
     left: 0;
-    background-color: black;
     height: 10vh;
     width: 100%;
     text-align: center;
-    color: white;
+    color: var(--textColor);
     display: grid;
     place-items: center;
-    font-family: helvetica;
-    font-size: 2rem;
+    font-family: Helvetica;
+    font-size: 2.5rem;
+    padding-top: 30px;
+    font-weight: bolder;
 }
