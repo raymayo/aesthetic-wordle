@@ -145,7 +145,8 @@ fetch('words.txt')
 
             function showAnswer() {
                 if ((word_page === 5) && (letter_page === 5)) {
-                    alert(`the answer is ${selectedWord.join('')}`)
+                    alert(`the answer is ${selectedWord.join('')}`);
+                    return;
                 } else {
                     word_page++;
                     letter_page = 0;
