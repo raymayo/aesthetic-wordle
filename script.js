@@ -47,15 +47,16 @@ fetch('words.txt')
                     e.key.charCodeAt() === 70
                 ) {
                     return;
-                } else if (
-                    e.key === "Backspace" &&
-                    word_container[word_page].children[letter_page] !== ""
-                ) {
+                } else if (e.key === "Backspace" && word_container[word_page].children[letter_page] !== "") {
                     checkUnderRange();
                     word_container[word_page].children[letter_page].textContent = "";
-                } else {
+                }
+                 else if (word_container[word_page].children[4].textContent === ""){
                     word_container[word_page].children[letter_page].textContent = e.key.toUpperCase();
                     checkOverRange();
+                } 
+                else{
+                   return;
                 }
             });
 
