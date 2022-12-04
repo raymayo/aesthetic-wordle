@@ -23,30 +23,17 @@ fetch("words.txt")
     word_page = 0;
 
     document.addEventListener("keydown", function (e) {
-      if (
-        e.key === "CapsLock" ||
-        e.key === "Tab" ||
-        e.key === "Shift" ||
-        e.key === "Control" ||
-        e.key === "ArrowUp" ||
-        e.key === "ArrowRight" ||
-        e.key === "ArrowDown" ||
-        e.key === "ArrowLeft" ||
-        e.key === "Alt" ||
-        e.key === "Escape" ||
-        e.key === "Delete" ||
-        e.key === "Insert" ||
-        e.key === "Home" ||
-        e.key === "PageUp" ||
-        e.key === "Enter" ||
-        e.key === "Meta" ||
-        e.key.charCodeAt() === 70
-      ) {
-        return;
-      } else if (
-        e.key === "Backspace" &&
-        word_container[word_page].children[letter_page] !== ""
-      ) {
+        if ((e.key.charCodeAt() <= 122) && (e.key.charCodeAt() >= 97) && (word_container[word_page].children[4].textContent === "")) {
+            word_container[word_page].children[letter_page].textContent =
+                e.key.toUpperCase();
+
+            gsap.fromTo(
+                word_container[word_page].children[letter_page],
+                { scale: 0, opacity: 0, ease: "expo.out" },
+                { scale: 1, opacity: 1, ease: "expo.out" }
+            );
+            checkOverRange();
+      } else if ((e.key === "Backspace") && (word_container[word_page].children[0].textContent !== "")) {
         checkUnderRange();
         word_container[word_page].children[letter_page].textContent = "";
         gsap.fromTo(
@@ -54,16 +41,6 @@ fetch("words.txt")
           { scale: 0, opacity: 0, ease: "expo.out" },
           { scale: 1, opacity: 1, ease: "expo.out" }
         );
-      } else if (word_container[word_page].children[4].textContent === "") {
-        word_container[word_page].children[letter_page].textContent =
-          e.key.toUpperCase();
-
-        gsap.fromTo(
-          word_container[word_page].children[letter_page],
-          { scale: 0, opacity: 0, ease: "expo.out" },
-          { scale: 1, opacity: 1, ease: "expo.out" }
-        );
-        checkOverRange();
       } else {
         return;
       }
