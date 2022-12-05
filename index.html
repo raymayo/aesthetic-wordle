@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Document</title>
 </head>
@@ -11,56 +12,91 @@
 
     <main>
         <header>
-            <nav>
-                <h1>ROSE PINE WORDLE</h1>
-            </nav>
+                <h1>Wordle</h1>
         </header>
         <div id="container">
             <div class="word-container" id="row-one">
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
             </div>
             <div class="word-container" id="row-two">
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
             </div>
             <div class="word-container" id="row-three">
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
             </div>
             <div class="word-container" id="row-four">
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
             </div>
             <div class="word-container" id="row-five">
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
             </div>
             <div class="word-container" id="row-six">
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
-                <box class="letter-container"></box>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
+                <div class="letter-container"></div>
             </div>
         </div>
+
+          <div class="keyboard">
+        <div class="row row1">
+            <button class="keyboard-key">Q</button>
+            <button class="keyboard-key">W</button>
+            <button class="keyboard-key">E</button>
+            <button class="keyboard-key">R</button>
+            <button class="keyboard-key">T</button>
+            <button class="keyboard-key">Y</button>
+            <button class="keyboard-key">U</button>
+            <button class="keyboard-key">I</button>
+            <button class="keyboard-key">O</button>
+            <button class="keyboard-key">P</button>
+            <button class="keyboard-backspace">&lt</button>
+        </div>
+        <div class="row row2">
+            <button class="keyboard-key">A</button>
+            <button class="keyboard-key">S</button>
+            <button class="keyboard-key">D</button>
+            <button class="keyboard-key">F</button>
+            <button class="keyboard-key">G</button>
+            <button class="keyboard-key">H</button>
+            <button class="keyboard-key">J</button>
+            <button class="keyboard-key">K</button>
+            <button class="keyboard-key">L</button>
+            <button class="keyboard-enter">^</button>
+        </div>
+            <div class="row row3">
+                <button class="keyboard-key">Z</button>
+                <button class="keyboard-key">X</button>
+                <button class="keyboard-key">C</button>
+                <button class="keyboard-key">V</button>
+                <button class="keyboard-key">B</button>
+                <button class="keyboard-key">N</button>
+                <button class="keyboard-key">M</button>
+            </div>
+    </div>
     </main>
-    <!-- <button id="check">Check</button> -->
+    <div id="popUp-container"></div>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
     <script src="script.js"></script>
