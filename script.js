@@ -90,7 +90,8 @@ fetch("words.txt")
             if (array.join("").toString() === selectedWord.join("").toString()){
                 
                 letterAlgo();
-                popUp('Well Played!', '#06d6a0');
+                popUp('Well Played!', '#EDE0D4');
+                word_page = 6;
             } else {
                 checkIncomplete();
             }
@@ -101,7 +102,7 @@ fetch("words.txt")
             if (word_container[word_page].children[4].textContent !== "") {
                 checkInput();
             } else {
-                popUp('Not enough letters', '#b4637a');
+                popUp('Not enough letters', '#EDE0D4');
             }
         }
 
@@ -116,7 +117,7 @@ fetch("words.txt")
                 word_page++;
 
             }else {
-                popUp('Not in word list', '#b4637a');
+                popUp('Not in word list', '#EDE0D4');
             }
         }
 
@@ -128,12 +129,12 @@ fetch("words.txt")
             for (let i = 0; i <= 4; i++) {
 
                 if (array[i] === selectedWord[i]) {                    
-                    algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(6,214,160)" },"<");
+                    algoTl.to(word_container[word_page].children[i], { backgroundColor: "rgb(68,175,105)" },"<");
                 } else {
                     if (selectedWord.includes(array[i])) {
                         algoTl.to(word_container[word_page].children[i], { backgroundColor: "rgb(234,157,52)" }, "<");
                     } else {
-                        algoTl.to(word_container[word_page].children[i], { backgroundColor: "rgba(152,147,165)" }, "<");
+                        algoTl.to(word_container[word_page].children[i], { backgroundColor: "rgb(149,163,179)" }, "<");
                     }
                 }
             }
@@ -156,8 +157,8 @@ fetch("words.txt")
             popUpMessage.classList.add('pop-up');
             popUpContainer.appendChild(popUpMessage);
             popUpMessage.style.backgroundColor = bg;
-            popUpTimeline.to('.pop-up', { display: 'block', opacity: 1, ease: "expo.out", y: 60 })
-            popUpTimeline.to('.pop-up', { delay: 1, display: 'none', opacity: 0, ease: "expo.out" });
+            popUpTimeline.to('.pop-up', { display: 'block', opacity: 1, ease: "expo.out", y: 30 })
+            popUpTimeline.to('.pop-up', { delay: 2, display: 'none', opacity: 0, ease: "expo.out" });
         }
 
 
@@ -174,13 +175,12 @@ fetch("words.txt")
 
     });
 
-        gsap.from(".word-container", {
-            scale: 0,
-            opacity: 0,
-            ease: "expo.out",
-            delay: 0.5,
-            stagger: { amount: 0.3 },
-        });
+    const startAnimation = gsap.timeline({ delay: 0.5 });
+
+startAnimation.from("header", { scale:0,y:-60, opacity: 0, ease: "expo.out"})
+startAnimation.from(".word-container", { scale: 0, opacity: 0, ease: "expo.out", stagger: { amount: 0.3 }, }, '<.1');
+startAnimation.from(".row", { scale: 0, opacity: 0, ease: "expo.out", stagger: { amount: 0.2 }, }, '<.3');
+
 
 
 function checkOverRange() {

@@ -1,7 +1,7 @@
 @media screen and (orientation: portrait){
     :root {
             --background: #faf4ed;
-            --textColor: #393552;
+            --color:#171A21;
             --bg2: #dfdad9;
             --font: 'Quicksand', sans-serif;
         }
@@ -51,13 +51,14 @@
         }
     
         .letter-container {
-            background-color: var(--bg2);
+            background-color: #EDE0D4;
+            color: var(--color);
             border-radius: 8px;
             font-family: var(--font);
             font-size: calc(3vw + 3vh);
-            font-weight: 500;
+            font-weight: bold;
             text-align: center;
-            padding-top: 10%;
+            padding-top: 5%;
         }
     
     
@@ -67,18 +68,19 @@
             font-family: var(--font);
             display: flex;
             place-items: center;
-            border-bottom: solid 1px #dfdad9;
-            padding: calc(.5vw + .5vh) 0;
+            padding: calc(1vw + 1vh) 0;
+
     
         }
     
     
     
         header h1 {
+  
             height: 100%;
             /* width: 30%; */
             margin: auto;
-            color: #b4637a;
+            color: var(--color);
             font-size: calc(3vh + 3vw);
         }
     
@@ -90,8 +92,8 @@
             padding: .3em;
             display: none;
             opacity: 0;
-            font-weight: 500;
-            color: #f2e9e1;
+            font-weight: bold;
+            color: black;
         }
     
         #popUp-container {
@@ -99,7 +101,7 @@
             width: calc(20vw + 20vh);
             height: 10vh;
             position: absolute;
-            bottom: 26%;
+            bottom: calc(15vw + 15vh);
             right: 50%;
             transform: translate(50%, -10%);
             pointer-events: none;
@@ -113,10 +115,10 @@
         } */
 
                 .keyboard {
-
                     width: 100vw;
                     text-align: center;
                     align-items: center;
+                    padding-top: 4%;
                 }
                 .row{
                     height: 14vw;
@@ -128,23 +130,17 @@
 
         
                 button {
-                    height: 100%;
-                    width: calc(2.5vw + 2.5vh); 
-                    font-size: calc(1.5vw + 1.5vh);
-
-
+                    height: 90%;
+                    width: 8%; 
+                    font-size: calc(2vw + 2vh);
                     border: none;
-                    background-color: #56949f;
-                    color: #f2e9e1;
-                    border-radius: 5px;
+                    background-color: #EDE0D4;
+                    color: var(--color);
+                    border-radius: 6px;
                     cursor: pointer;
                     font-family: 'Quicksand', sans-serif;
                     font-weight: bold;
                     text-align: center;
-                }
-
-                main{
-                    padding-bottom: 3%;
                 }
         
 }
