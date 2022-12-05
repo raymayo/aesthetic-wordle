@@ -25,61 +25,72 @@ fetch("words.txt")
     .then((response) => response.text())
     .then((text) => (word = text))
     .then(function (word) {
-        capitalText = word.toUpperCase();
-        separateWords = capitalText.match(/.{1,5}/g);
-        arrayWords = Array.from(separateWords);
-        randomizeWord = Math.floor(Math.random() * arrayWords.length);
-        selectedWord = arrayWords[randomizeWord].toUpperCase().split("");
+
+        function getNewWord(){
+            capitalText = word.toUpperCase();
+            separateWords = capitalText.match(/.{1,5}/g);
+            arrayWords = Array.from(separateWords);
+            randomizeWord = Math.floor(Math.random() * arrayWords.length);
+            selectedWord = arrayWords[randomizeWord].toUpperCase().split("");
+        }
+
+        getNewWord();
         console.log(selectedWord);
+
+        getNewWord();
+        console.log(selectedWord);
+
+        getNewWord();
+        console.log(selectedWord);
+
         word_container = document.querySelectorAll(".word-container");
         letter_page = 0;
         word_page = 0;
 
+        
+
         document.addEventListener("keydown", function (e) {
-            if (e.key.charCodeAt() <= 122 &&e.key.charCodeAt() >= 97 && word_container[word_page].children[4].textContent === "") {
 
-                letterAudio.currentTime = 0;
-                letterAudio.play();
-
-                word_container[word_page].children[letter_page].textContent = e.key.toUpperCase();
-
-                gsap.fromTo(word_container[word_page].children[letter_page],{ scale: 0, opacity: 0, ease: "expo.out" },{ scale: 1, opacity: 1, ease: "expo.out" });
-                checkOverRange();
-            } else if (e.key === "Backspace" && word_container[word_page].children[0].textContent !== "") {
-
-                backspaceAudio.currentTime = 0;
-                backspaceAudio.play();
-                checkUnderRange();
-                word_container[word_page].children[letter_page].textContent = "";
-                gsap.fromTo(word_container[word_page].children[letter_page],{ scale: 0, opacity: 0, ease: "expo.out" },{ scale: 1, opacity: 1, ease: "expo.out" });
-            
-            } else {
+            if(word_page === 6){
                 return;
-            }
-        });
+                //ADD HERE PLAY AGAIN FUNCTION
+            }else {
+                if ((e.key.charCodeAt() <= 122 && e.key.charCodeAt() >= 97) && (word_container[word_page].children[4].textContent === "")) {
 
-        document.addEventListener("keydown", (e) => {
+                    letterAudio.currentTime = 0;
+                    letterAudio.play();
 
-             if (e.key === "Enter") {
+                    if (word_page === 6) {
+                        return;
+                    } else {
+                        word_container[word_page].children[letter_page].textContent = e.key.toUpperCase();
+                        gsap.fromTo(word_container[word_page].children[letter_page], { scale: 0, opacity: 0, ease: "expo.out" }, { scale: 1, opacity: 1, ease: "expo.out" });
+                        checkOverRange();
+                    }
 
-                 enterAudio.currentTime = 0;
-                 enterAudio.play();
 
+                } else if (e.key === "Backspace" && word_container[word_page].children[0].textContent !== "") {
 
-                 if (word_container[5].children[4].textContent === ""){
-                     validateCompletion();
-                 } else if (word_container[5].children[4].textContent === array){
-                     return;
-                 }else {
-                     letterAlgo();
-                     popUp(`The Word is ${selectedWord.join("")}`, '#06d6a0');
-                     word_page++;
-                 }
+                    backspaceAudio.currentTime = 0;
+                    backspaceAudio.play();
 
+                    checkUnderRange();
+                    word_container[word_page].children[letter_page].textContent = "";
+                    gsap.fromTo(word_container[word_page].children[letter_page], { scale: 0, opacity: 0, ease: "expo.out" }, { scale: 1, opacity: 1, ease: "expo.out" });
+
+                } else if (e.key === "Enter") {
+                    enterAudio.currentTime = 0;
+                    enterAudio.play();
+                    
+                    validateCompletion();
+                } else {
+                    return;
                 }
                 
-
+            }
+           
         });
+
 
         function validateCompletion() {
 
@@ -88,11 +99,16 @@ fetch("words.txt")
             array = array.filter((e) => e % 2 !== 0);
 
             if (array.join("").toString() === selectedWord.join("").toString()){
-                
                 letterAlgo();
-                popUp('Well Played!', '#EDE0D4');
+                popUp('Well Played!', '#44af69');
                 word_page = 6;
-            } else {
+            } else if (word_container[5].children[4].textContent !== ""){
+                letterAlgo();
+                popUp(`The Word is ${selectedWord.join("")}`, '#44af69');
+                word_page++;
+            }
+            
+            else {
                 checkIncomplete();
             }
         }
