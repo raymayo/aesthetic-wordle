@@ -8,11 +8,19 @@ let separateWords;
 let arrayWords;
 let randomizeWord;
 let selectedWord;
-let word_container;
 let letter_page;
 let word_page;
 let word_checker;
 let array;
+
+
+let popUpContainer = document.querySelector("#popUp-container");
+let endContainer = document.querySelector('#end-container');
+let button = document.querySelectorAll(".keyboard-key");
+let enter = document.querySelector(".keyboard-enter");
+let Backspace = document.querySelector(".keyboard-backspace");
+let word_container = document.querySelectorAll(".word-container");
+let retryButton = document.querySelector('#retry-btn');
 
 const letterAudio = new Audio("./click.mp3");
 const enterAudio = new Audio("./enter.mp3");
@@ -29,10 +37,11 @@ fetch("words.txt")
             arrayWords = Array.from(separateWords);
             randomizeWord = Math.floor(Math.random() * arrayWords.length);
             selectedWord = arrayWords[randomizeWord].toUpperCase().split("");
+            console.log(selectedWord);
         }
 
-        // getNewWord();
-        // console.log(selectedWord);
+        getNewWord();
+
 
         // getNewWord();
         // console.log(selectedWord);
@@ -40,14 +49,16 @@ fetch("words.txt")
         // getNewWord();
         // console.log(selectedWord);
 
-        word_container = document.querySelectorAll(".word-container");
+
         letter_page = 0;
         word_page = 0;
 
         document.addEventListener("keydown", function (e) {
             if (word_page === 6) {
-                return;
+
                 //ADD HERE PLAY AGAIN FUNCTION
+                return;
+                
             } else {
                 if (
                     e.key.charCodeAt() <= 122 &&
@@ -102,11 +113,13 @@ fetch("words.txt")
             if (array.join("").toString() === selectedWord.join("").toString()) {
                 letterAlgo();
                 popUp("Well Played!", "#44af69");
-                word_page = 6;
+                word_page++;
+                retry();
             } else if (word_container[5].children[4].textContent !== "") {
                 letterAlgo();
                 popUp(`The Word is ${selectedWord.join("")}`, "#44af69");
                 word_page++;
+                retry();
             } else {
                 checkIncomplete();
             }
@@ -136,8 +149,9 @@ fetch("words.txt")
 
         function letterAlgo() {
             let algoTl = gsap.timeline({ delay: 0.5 });
+            
 
-            gsap.to(word_container[word_page].children, { scale: 0, opacity: 0 });
+            gsap.to(word_container[word_page].children,  { scale: 0, opacity: 0 });
 
             for (let i = 0; i <= 4; i++) {
                 if (array[i] === selectedWord[i]) {
@@ -172,7 +186,7 @@ fetch("words.txt")
 
         function popUp(message, bg) {
             let popUpMessage = document.createElement("p");
-            let popUpContainer = document.querySelector("#popUp-container");
+
             let popUpTimeline = gsap.timeline();
 
             popUpContainer.innerHTML = "";
@@ -206,6 +220,39 @@ fetch("words.txt")
 
             validateCompletion();
         });
+
+
+
+        function retry() {
+            const endTl = gsap.timeline({ delay: .8 });
+            endTl.fromTo('#end-bg', { display: 'none', opacity: 0, ease: 'expo.out' }, { display: 'block', opacity: .9, ease: 'expo.out' })
+            endTl.fromTo('#end-container', { display: 'none', opacity: 0, scale: 0, ease: 'expo.out' }, { display: 'block', opacity: 1, scale: 1, ease: 'expo.out' })
+        }
+
+
+        retryButton.addEventListener('click', () => {
+
+            let letterContainer = document.querySelectorAll('.letter-container');
+            // for (let i = 0; i < letterContainer.length; i++) {
+            //     letterContainer[i].textContent = '';
+            // }
+
+            word_page = 0;
+            letter_page = 0;
+            const retryTl = gsap.timeline({});
+            retryTl.to('#end-container', { opacity: 0, display: 'none', scale: 0, ease: 'expo.out' })
+            retryTl.to('#end-bg', { opacity: 0, display: 'none', ease: 'expo.out' })
+            retryTl.to(letterContainer, { scale: 0, ease: 'expo.out', stagger: { from: 'end', amount: .3 } })
+            retryTl.to(letterContainer, { backgroundColor: '#EDE0D4', textContent:'', ease: 'expo.out'})
+            retryTl.to(letterContainer, { scale: 1, ease: 'expo.out', stagger: { from: 'start', amount: .3 } })
+            endBg.style.display = 'none';
+            endContainer.style.display = 'none';
+
+
+            getNewWord();
+
+
+        })
     });
 
 const startAnimation = gsap.timeline({ delay: 0.5 });
@@ -243,10 +290,6 @@ function checkUnderRange() {
     }
 }
 
-let button = document.querySelectorAll(".keyboard-key");
-// let p = document.getElementById('ip');
-let enter = document.querySelector(".keyboard-enter");
-let Backspace = document.querySelector(".keyboard-backspace");
 
 // FOR MOUSE
 for (let x of button) {
@@ -274,7 +317,14 @@ for (let x of button) {
             checkOverRange();
         }
     });
+
+    
 }
+
+
+
+
+
 
 Backspace.addEventListener("mousedown", function () {
     if (word_container[word_page].children[0].textContent !== "") {

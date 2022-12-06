@@ -142,6 +142,39 @@
                     font-weight: bold;
                     text-align: center;
                 }
+
+                #end-bg{
+                    position: absolute;
+                    background: black;
+                    top: 0;
+                    left: 0;
+                    width: 100vw;
+                    height: 100vh;
+                    opacity: .9;
+                    display: none;
+                    z-index: 500;
+                }
+
+
+                #end-container{
+                    position: absolute;
+                    top: calc(18vw + 18vh);
+                    left:calc(3.5vw + 3.5vh);
+                    background: salmon;
+                    z-index: 1000;
+                    width: 80%;
+                    height: 50%;
+                    font-family: var(--font);
+                    border-radius: 10px;
+                    display: none;
+                }
+
+                #retry-btn{
+                    width: 10rem;
+                    height: 3rem;
+                }
+
+                
         
 }
 
