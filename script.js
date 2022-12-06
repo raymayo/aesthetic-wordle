@@ -2,6 +2,8 @@ let vh = window.innerHeight * 0.01;
 
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
+//hello
+
 let word;
 let capitalText;
 let separateWords;
@@ -58,7 +60,7 @@ fetch("words.txt")
 
                 //ADD HERE PLAY AGAIN FUNCTION
                 return;
-
+                
             } else {
                 if (
                     e.key.charCodeAt() <= 122 &&
@@ -149,9 +151,9 @@ fetch("words.txt")
 
         function letterAlgo() {
             let algoTl = gsap.timeline({ delay: 0.5 });
+            
 
-
-            gsap.to(word_container[word_page].children, { scale: 0, opacity: 0 });
+            gsap.to(word_container[word_page].children,  { scale: 0, opacity: 0 });
 
             for (let i = 0; i <= 4; i++) {
                 if (array[i] === selectedWord[i]) {
@@ -243,7 +245,7 @@ fetch("words.txt")
             retryTl.to('#end-container', { opacity: 0, display: 'none', scale: 0, ease: 'expo.out' })
             retryTl.to('#end-bg', { opacity: 0, display: 'none', ease: 'expo.out' })
             retryTl.to(letterContainer, { scale: 0, ease: 'expo.out', stagger: { from: 'end', amount: .3 } })
-            retryTl.to(letterContainer, { backgroundColor: '#EDE0D4', textContent: '', ease: 'expo.out' })
+            retryTl.to(letterContainer, { backgroundColor: '#EDE0D4', textContent:'', ease: 'expo.out'})
             retryTl.to(letterContainer, { scale: 1, ease: 'expo.out', stagger: { from: 'start', amount: .3 } })
             endBg.style.display = 'none';
             endContainer.style.display = 'none';
@@ -318,7 +320,7 @@ for (let x of button) {
         }
     });
 
-
+    
 }
 
 
