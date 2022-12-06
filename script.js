@@ -235,9 +235,6 @@ fetch("words.txt")
         retryButton.addEventListener('click', () => {
 
             let letterContainer = document.querySelectorAll('.letter-container');
-            // for (let i = 0; i < letterContainer.length; i++) {
-            //     letterContainer[i].textContent = '';
-            // }
 
             word_page = 0;
             letter_page = 0;
@@ -247,8 +244,7 @@ fetch("words.txt")
             retryTl.to(letterContainer, { scale: 0, ease: 'expo.out', stagger: { from: 'end', amount: .3 } })
             retryTl.to(letterContainer, { backgroundColor: '#EDE0D4', textContent:'', ease: 'expo.out'})
             retryTl.to(letterContainer, { scale: 1, ease: 'expo.out', stagger: { from: 'start', amount: .3 } })
-            endBg.style.display = 'none';
-            endContainer.style.display = 'none';
+
 
 
             getNewWord();
