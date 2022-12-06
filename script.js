@@ -2,6 +2,8 @@ let vh = window.innerHeight * 0.01;
 
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
+//hello
+
 let word;
 let capitalText;
 let separateWords;
