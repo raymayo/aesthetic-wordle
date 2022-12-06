@@ -31,8 +31,8 @@ fetch("words.txt")
             selectedWord = arrayWords[randomizeWord].toUpperCase().split("");
         }
 
-        // getNewWord();
-        // console.log(selectedWord);
+         getNewWord();
+         console.log(selectedWord);
 
         // getNewWord();
         // console.log(selectedWord);
