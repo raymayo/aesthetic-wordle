@@ -157,7 +157,7 @@
 
             //FUNCTION FOR GIVING THE RIGHT COLORS IN THE INPUT
             function letterAlgo() {
-                let algoTl = gsap.timeline({ delay: 0.5 });
+                let algoTl = gsap.timeline({ delay: 0.5, ease: 'expo.out' });
 
                 gsap.to(word_container[word_page].children, { scale: 0, opacity: 0 });
 
@@ -168,16 +168,32 @@
                             { backgroundColor: "rgb(68,175,105)" },
                             "<"
                         );
+
+                        // console.log(word_container[word_page].children[i].textContent);
+                        for (e of button){
+                            if (word_container[word_page].children[i].textContent === e.textContent){
+                                algoTl.to(e, { backgroundColor: "rgb(68,175,105)" }, "<");
+                            }
+                        }
+
                     } else if (
                         word_container[word_page].children[i].style.backgroundColor !==
                         "rgb(68,175,105)" &&
                         selectedWord.includes(array[i])
                     ) {
+                        console.log(word_container[word_page].children[i].textContent);
                         algoTl.to(
                             word_container[word_page].children[i],
                             { backgroundColor: "rgb(234,157,52)" },
                             "<"
                         );
+
+                        for (e of button) {
+                            if (word_container[word_page].children[i].textContent === e.textContent) {
+                                algoTl.to(e, { backgroundColor: "rgb(234,157,52)" }, "<");
+                            }
+                        }
+
                     } else {
                         algoTl.to(
                             word_container[word_page].children[i],
@@ -199,7 +215,6 @@
             //POP UP MESSAGE
             function popUp(message, bg) {
                 let popUpMessage = document.createElement("p");
-
                 let popUpTimeline = gsap.timeline();
 
                 popUpContainer.innerHTML = "";
@@ -215,7 +230,7 @@
                     y: 30,
                 });
                 popUpTimeline.to(".pop-up", {
-                    delay: 2,
+                    delay: 3,
                     display: "none",
                     opacity: 0,
                     ease: "expo.out",
@@ -258,6 +273,12 @@
                     ease: "expo.out",
                 });
                 retryTl.to("#end-bg", { opacity: 0, display: "none", ease: "expo.out" });
+
+
+                for (e of button) {
+                    gsap.to(e, { backgroundColor: "#EDE0D4", ease: 'expo.out', delay:.6});
+                }
+
                 retryTl.to(letterContainer, {
                     scale: 0,
                     ease: "expo.out",
@@ -273,6 +294,7 @@
                     ease: "expo.out",
                     stagger: { from: "start", amount: 0.3 },
                 });
+
 
                 getNewWord();
             });

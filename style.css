@@ -92,20 +92,15 @@
     #popUp-container {
         text-align: center;
         width: calc(20vw + 20vh);
-        height: 10vh;
-        position: absolute;
+        height: .1vh;
+        transform: translateY(calc(-3.5vw + -3.5vh));
+        /* position: absolute;
         bottom: calc(15vw + 15vh);
         right: 50%;
-        transform: translate(50%, -10%);
+        transform: translate(50%, -10%); */
         pointer-events: none;
     }
 
-    /* .keyboard{
-            outline: greenyellow;
-        }
-        .keyboard  *{
-            outline: solid 1px red;
-        } */
 
     .keyboard {
         width: 100vw;
