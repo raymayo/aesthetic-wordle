@@ -149,40 +149,57 @@ fetch("words.txt")
 
             for (let i = 0; i <= 4; i++) {
 
-                if (array[i] === selectedWord[i]) {
 
-                    algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(68,175,105)" } ,"<");
+            if (array[i] === selectedWord[i] && word_container[word_page].children[i].style.backgroundColor !== "rgb(234,157,52)" && word_container[word_page].children[i].style.backgroundColor !== "rgb(149,163,179)") {
 
+            algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(68,175,105)" } ,"<");
 
-                    for (e of button) {
+                for (e of button) {
 
-                        if (word_container[word_page].children[i].textContent ===e.textContent) {
-                            algoTl.to(e, { backgroundColor: "rgb(68,175,105)" }, "<");
-                        }
-                    }
+                    if (word_container[word_page].children[i].textContent === e.textContent) {
 
-                } else if (word_container[word_page].children[i].style.backgroundColor !=="rgb(68,175,105)" && selectedWord.includes(array[i])) {
-
-                    algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(234,157,52)" },"<");
-
-                    for (e of button) {
-                        if (word_container[word_page].children[i].textContent ===e.textContent) {
-                            algoTl.to(e, { backgroundColor: "rgb(234,157,52)" }, "<");
-                        }
-                    }
-                }else {
-
-                    algoTl.to(word_container[word_page].children[i], { backgroundColor: "rgb(149,163,179)" }, "<");
-
-                    for (e of button) {
-                        if (word_container[word_page].children[i].textContent === e.textContent) {
-                            algoTl.to(e, { backgroundColor: "rgb(149,163,179)" }, "<");
-                        }
+                        algoTl.to(e, { backgroundColor: "rgb(68,175,105)" }, "<");
                     }
                 }
-        
-            }
-            gsap.to(word_container[word_page].children, {delay: 0.5,scale: 1,opacity: 1,stagger: 0.2,});
+
+        } else if (selectedWord.includes(array[i])) {
+
+                algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(234,157,52)" },"<");
+
+                console.log(word_container[word_page].children[i].textContent);
+
+                for (e of button) {
+
+                    if (word_container[word_page].children[i].textContent === e.textContent) {
+
+                        if (e.style.backgroundColor === 'rgb(68, 175, 105)'){
+
+                            algoTl.to(e, { backgroundColor: "rgb(68,175,105)" }, "<");
+
+                        } else if (e.style.backgroundColor !== 'rgb(68, 175, 105)' && e.style.backgroundColor !== '#ede0d4'){
+                            algoTl.to(e, { backgroundColor: "rgb(234,157,52)" }, "<");
+                        }
+
+                    }
+                }
+        }else {
+
+            algoTl.to(word_container[word_page].children[i], { backgroundColor: "rgb(149,163,179)" }, "<");
+
+                for (e of button) {
+
+                    if (word_container[word_page].children[i].textContent === e.textContent) {
+
+                        algoTl.to(e, { backgroundColor: "rgb(149,163,179)" }, "<");
+
+                    }
+                }
+        }
+
+                
+             }
+
+            gsap.to(word_container[word_page].children, { delay: 0.5, scale: 1, opacity: 1, stagger: 0.2, });
         }
 
         //POP UP MESSAGE
@@ -204,7 +221,7 @@ fetch("words.txt")
         function retry() {
 
             const endTl = gsap.timeline({ delay: 0.8 });
-            endTl.fromTo("#end-bg",{ display: "none", opacity: 0, ease: "expo.out" },{ display: "block", opacity: 0.8, ease: "expo.out" });
+            endTl.fromTo("#end-bg",{ display: "none", opacity: 0, ease: "expo.out" },{ display: "block", opacity: 0.5, ease: "expo.out" });
             endTl.fromTo("#end-container",{ display: "none", opacity: 0, scale: 0, ease: "expo.out" },{ display: "grid", opacity: 1, scale: 1, ease: "expo.out" });
         }
 

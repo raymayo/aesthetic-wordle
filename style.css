@@ -140,7 +140,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        opacity: 0.9;
+        opacity: 0.5;
         display: none;
         z-index: 500;
     }
@@ -161,8 +161,37 @@
     }
 
     #retry-btn {
-        width: 10rem;
+        width: calc(13vw + 13vh);
         height: 3rem;
+    }
+
+    #guide-bg {
+        position: absolute;
+        background: #171a21;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        opacity: 0.5;
+        display: none;
+        z-index: 500;
+    }
+
+    #guide-container {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(250, 244, 237, 1.0);
+        z-index: 1000;
+        width: 80%;
+        height: 60%;
+        font-family: var(--font);
+        border-radius: 10px;
+        display: grid;
+        place-content: center;
+        display: none;
+
     }
 }
 
