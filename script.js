@@ -2,8 +2,6 @@ let vh = window.innerHeight * 0.01;
 document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 
-
-
 //Variables
 let word;
 let capitalText;
@@ -15,7 +13,6 @@ let letter_page;
 let word_page;
 let word_checker;
 let array;
-
 
 
 
@@ -506,3 +503,5 @@ function checkUnderRange() {
     letter_page--;
   }
 }
+
+
