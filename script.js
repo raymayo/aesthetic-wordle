@@ -59,7 +59,7 @@ fetch("words.txt")
             if (word_page === 6) {
                 return;
             }
-            if (e.key.charCodeAt() <= 122 && e.key.charCodeAt() >= 97 && word_container[word_page].children[4].textContent === "" && guideContainer.style.display === 'none' && guideBackground.style.display !== 'none') {
+            if (e.key.charCodeAt() <= 122 && e.key.charCodeAt() >= 97 && word_container[word_page].children[4].textContent === "" && guideContainer.style.display === 'none') {
 
                     letterAudio.currentTime = 0;
                     letterAudio.play();
