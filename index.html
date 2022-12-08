@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/x-icon" href="./favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>Wordle Clone</title>
@@ -106,11 +107,17 @@
 
         <div id="guide-bg"></div>
          <div id="guide-container">
+            <div>
             <h1>How To Play</h1>
             <h2>Guess the Wordle in 6 tries.</h2>
+            </div>
+            <div>
             <h3>Example</h3>
-            
-            <!-- <button id="retry-btn">Play Again?</button> -->
+            <h4><span class="guide-colors-1">GREEN</span> means the letter is in the word and in the correct spot.</h4>
+            <h4><span class="guide-colors-2">YELLOW</span> means the letter is in the word but in the wrong spot.</h4>
+            <h4><span class="guide-colors-3">GREY</span> means the letter is not in the word in any spot.</h4>
+            <button id="exit-btn">X</button>
+            </div>
          </div>
 
      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
