@@ -92,7 +92,8 @@ fetch("words.txt")
 
         document.addEventListener("keydown", function (e){
             if (e.key === 'Enter' && endContainer.style.display === 'grid'){
-                console.log(`the display of endContainer is ${endContainer.style.display}`);
+                enterAudio.currentTime = 0;
+                enterAudio.play();
                 retryClick();
             }
         })
@@ -252,8 +253,9 @@ fetch("words.txt")
             word_page = 0;
             letter_page = 0;
             const retryTl = gsap.timeline({});
-            retryTl.to("#end-container", { opacity: 0, display: "none", scale: 0, ease: "expo.out", });
-            retryTl.to("#end-bg", { opacity: 0, display: "none", ease: "expo.out" });
+            retryTl.fromTo(retryButton, { scale: .8, ease: 'expo.in' }, { scale: 1, ease: 'expo.out' },'<')
+            retryTl.to("#end-container", { opacity: 0, display: "none", scale: 0, ease: "expo.out", },'<.1');
+            retryTl.to("#end-bg", { opacity: 0, display: "none", ease: "expo.out" },'<.3');
 
             for (e of button) {
 
