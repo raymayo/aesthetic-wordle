@@ -67,6 +67,8 @@ fetch("words.txt")
     //SET INDICATORS
     letter_page = 0;
     word_page = 0;
+
+
     
 
     setTimeout(() => {
@@ -80,10 +82,12 @@ fetch("words.txt")
         if (
           e.key.charCodeAt() <= 122 &&
           e.key.charCodeAt() >= 97 &&
-          word_container[word_page].children[4].textContent === ""
+          word_container[word_page].children[4].textContent === "" &&
+          guideContainer.style.display === "none"
         ) {
           letterAudio.currentTime = 0;
           letterAudio.play();
+
 
           if (word_page !== 6) {
             word_container[word_page].children[letter_page].textContent =
@@ -93,6 +97,18 @@ fetch("words.txt")
               { scale: 0.5, ease: "expo.in" },
               { scale: 1, ease: "expo.out" }
             );
+
+            for(let key of button){
+
+            if (e.key.toUpperCase() === key.textContent){
+                  gsap.fromTo(
+                    key,
+                    { scale: 0.5, ease: "expo.in" },
+                    { scale: 1, ease: "expo.out" }
+                  );
+               }
+
+             }
             checkOverRange();
           }
           return;
@@ -110,14 +126,29 @@ fetch("words.txt")
             { scale: 0.5, ease: "expo.in" },
             { scale: 1, ease: "expo.out" }
           );
+
+          gsap.fromTo(
+            ".keyboard-backspace",
+            { scale: 0.5, ease: "expo.in" },
+            { scale: 1, ease: "expo.out" }
+          );
+          
         } else if (e.key === "Enter") {
           enterAudio.currentTime = 0;
           enterAudio.play();
+
+          gsap.fromTo(
+            ".keyboard-enter",
+            { scale: 0.5, ease: "expo.in" },
+            { scale: 1, ease: "expo.out" }
+          );
+
+          
           validateCompletion();
         }
         return;
       });
-    }, 3500);
+    }, 3000);
 
     document.addEventListener("keydown", function (e) {
       if (e.key === "Enter" && endContainer.style.display === "grid") {
@@ -425,8 +456,11 @@ fetch("words.txt")
     });
 
 
-
     function guideExit() {
+
+      enterAudio.currentTime = 0;
+      enterAudio.play();
+
       let exitAnimation = gsap.timeline();
       exitAnimation.fromTo(
         exitButton,
@@ -445,10 +479,14 @@ fetch("words.txt")
       );
     }
 
+
     exitButton.addEventListener("click", () => {
       guideExit();
     });
+
+
   });
+
 
 
 
@@ -483,6 +521,7 @@ startAnimation.from(
   { display: "none", opacity: 0, scale: 0, ease: "expo.inout" },
   "<.1"
 );
+
 
 
 
