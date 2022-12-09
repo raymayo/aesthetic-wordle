@@ -58,15 +58,12 @@ fetch("words.txt")
       selectedWord = arrayWords[randomizeWord].toUpperCase().split("");
       console.log(selectedWord);
 
+      console.log(word_page);
+      console.log(letter_page);
     }
 
 
     getNewWord();
-
-
-    //SET INDICATORS
-    // letter_page = 0;
-    // word_page = 0;
 
 
     
@@ -79,93 +76,48 @@ fetch("words.txt")
         if (word_page === 6) {
           return;
         }
-        if (
-          e.key.charCodeAt() <= 122 &&
-          e.key.charCodeAt() >= 97 &&
-          word_container[word_page].children[4].textContent === "" &&
-          guideContainer.style.display === "none"
-        ) {
-          letterAudio.currentTime = 0;
-          letterAudio.play();
+        if (e.key.charCodeAt() <= 122 &&e.key.charCodeAt() >= 97 &&word_container[word_page].children[4].textContent === "" && guideContainer.style.display === "none") {
+
+          playSFX(letterAudio)
 
 
           if (word_page !== 6) {
-            word_container[word_page].children[letter_page].textContent =
-              e.key.toUpperCase();
-            gsap.fromTo(
-              word_container[word_page].children[letter_page],
-              { scale: 0.5, ease: "expo.in" },
-              { scale: 1, ease: "expo.out" }
-            );
+            word_container[word_page].children[letter_page].textContent = e.key.toUpperCase();
+            gsap.fromTo(word_container[word_page].children[letter_page],{ scale: 0.5, ease: "expo.in" },{ scale: 1, ease: "expo.out" });
 
             for(let key of button){
 
             if (e.key.toUpperCase() === key.textContent){
-                  gsap.fromTo(
-                    key,
-                    { scale: 0.5, ease: "expo.in" },
-                    { scale: 1, ease: "expo.out" }
-                  );
+
+                  scaleAnimation(key)
                }
 
              }
             checkOverRange();
           }
           return;
-        } else if (
-          e.key === "Backspace" &&
-          word_container[word_page].children[0].textContent !== ""
-        ) {
-          backspaceAudio.currentTime = 0;
-          backspaceAudio.play();
+        } else if (e.key === "Backspace" &&word_container[word_page].children[0].textContent !== "") {
+
+          playSFX(backspaceAudio)
 
           checkUnderRange();
           word_container[word_page].children[letter_page].textContent = "";
-          gsap.fromTo(
-            word_container[word_page].children[letter_page],
-            { scale: 0.5, ease: "expo.in" },
-            { scale: 1, ease: "expo.out" }
-          );
-
-          gsap.fromTo(
-            ".keyboard-backspace",
-            { scale: 0.5, ease: "expo.in" },
-            { scale: 1, ease: "expo.out" }
-          );
+          scaleAnimation(word_container[word_page].children[letter_page])
+          scaleAnimation(".keyboard-backspace")
           
-        } else if (e.key === "Enter") {
-          enterAudio.currentTime = 0;
-          enterAudio.play();
+        } else if (e.key === "Enter" && word_page <= 5) {
 
-          gsap.fromTo(
-            ".keyboard-enter",
-            { scale: 0.5, ease: "expo.in" },
-            { scale: 1, ease: "expo.out" }
-          );
-          console.log(word_page)
-          console.log(letter_page)
+          playSFX(enterAudio)
 
+          scaleAnimation(".keyboard-enter")
           validateCompletion();
+
         }
+        
         return;
       });
-    }, 2500);
-
-
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" && endContainer.style.display !== "none" && endContainer.style.display !== '') {
-        enterAudio.currentTime = 0;
-        enterAudio.play();
-        retryButton.click();
-
-
-
-      }
-      return
-    });
-
-
+      
+    }, 1800);
 
 
     if (guideContainer.style.display !== "") {
@@ -186,18 +138,20 @@ fetch("words.txt")
       array = array.filter((e) => e % 2 !== 0);
 
       if (array.join("").toString() === selectedWord.join("").toString()) {
+
         letterAlgo();
         popUp("Well Played!", "#44af69");
-        word_page++;
         retry();
-      } else if (word_container[5].children[4].textContent !== "") {
+
+      } else if (word_container[5].children[4].textContent !== "" && word_page > 0) {
+        
         letterAlgo();
         popUp(`The Word is ${selectedWord.join("")}`, "#44af69");
-        word_page++;
         retry();
       } else {
         checkIncomplete();
       }
+      return;
     }
 
 
@@ -217,14 +171,9 @@ fetch("words.txt")
 
     //FUNCTION FOR CHECKING IF THE INPUT IS IN THE WORD LIST
     function checkInput() {
-      word_checker = word_container[word_page];
-      array = Array.from(word_checker.innerText);
-      array = array.filter((e) => e % 2 !== 0);
-
       if (arrayWords.includes(array.join("").toString())) {
         letterAlgo();
         letter_page = 0;
-        word_page++;
       } else {
         popUp("Not in word list", "#EDE0D4");
       }
@@ -237,15 +186,13 @@ fetch("words.txt")
     function letterAlgo() {
       let algoTl = gsap.timeline({ delay: 0.5, ease: "expo.inout"});
 
-      gsap.to(word_container[word_page].children, { scale: 0, opacity: 0 });
+      gsap.to(word_container[word_page].children, { scale: 0, opacity: 0, ease: 'expo.inout',stagger:.05});
 
       for (let i = 0; i <= 4; i++) {
+
         if (array[i] === selectedWord[i]) {
-          algoTl.to(
-            word_container[word_page].children[i],
-            { backgroundColor: "rgb(68,175,105)" },
-            "<"
-          );
+
+          algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(68,175,105)" },"<" );
 
           for (e of button) {
             if (
@@ -258,53 +205,37 @@ fetch("words.txt")
         } else {
           if (selectedWord.includes(array[i])) {
 
-            algoTl.to(
-              word_container[word_page].children[i],
-              { backgroundColor: "rgb(234,157,52)" },
-              "<"
-            );
+            algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(234,157,52)" },"<");
 
             for (e of button) {
-              if (
-                word_container[word_page].children[i].textContent ===
-                e.textContent
-              ) {
+              if (word_container[word_page].children[i].textContent === e.textContent) {
+
                 if (e.style.backgroundColor === "rgb(68, 175, 105)") {
+
                   algoTl.to(e, { backgroundColor: "rgb(68,175,105)" }, "<");
-                } else if (
-                  e.style.backgroundColor !== "rgb(68, 175, 105)" &&
-                  e.style.backgroundColor !== "#ede0d4"
-                ) {
+
+                } else if ( e.style.backgroundColor !== "rgb(68, 175, 105)" && e.style.backgroundColor !== "#ede0d4") {
+                  
                   algoTl.to(e, { backgroundColor: "rgb(234,157,52)" }, "<");
                 }
               }
             }
-          }else{
+          } else{
 
-          algoTl.to(
-            word_container[word_page].children[i],
-            { backgroundColor: "rgb(149,163,179)" },
-            "<"
-          );
+          algoTl.to(word_container[word_page].children[i],{ backgroundColor: "rgb(149,163,179)" },"<");
 
-          for (e of button) {
-            if (
-              word_container[word_page].children[i].textContent ===
-              e.textContent
-            ) {
-              algoTl.to(e, { backgroundColor: "rgb(149,163,179)" }, "<");
+            for (e of button) {
+              if ( word_container[word_page].children[i].textContent === e.textContent) {
+                algoTl.to(e, { backgroundColor: "rgb(149,163,179)" }, "<");
+              }
             }
-          }
           }
         }
       }
 
-      gsap.to(word_container[word_page].children, {
-        delay: 0.5,
-        scale: 1,
-        opacity: 1,
-        stagger: 0.15,
-      });
+      gsap.to(word_container[word_page].children, {delay: 0.4,scale: 1,opacity: 1,stagger: 0.1, ease:'expo.inout'});
+
+      word_page++;
     }
 
     //POP UP MESSAGE
@@ -318,86 +249,38 @@ fetch("words.txt")
       popUpMessage.classList.add("pop-up");
       popUpContainer.appendChild(popUpMessage);
       popUpMessage.style.backgroundColor = bg;
-      popUpTimeline.to(".pop-up", {
-        display: "block",
-        opacity: 1,
-        ease: "expo.out",
-        y: 30,
-      });
-      popUpTimeline.to(".pop-up", {
-        delay: 3,
-        display: "none",
-        opacity: 0,
-        ease: "expo.out",
-      });
+      popUpTimeline.to(".pop-up", {display: "block",opacity: 1,ease: "expo.out",y: 30,});
+      popUpTimeline.to(".pop-up", {delay: 3,display: "none",opacity: 0,ease: "expo.out",});
     }
 
     function retry() {
-      const endTl = gsap.timeline({ delay: 0.8 });
-      endTl.fromTo(
-        "#end-bg",
-        { display: "none", opacity: 0, ease: "expo.in" },
-        { display: "block", opacity: 0.5, ease: "expo.out" }
-      );
-      endTl.fromTo(
-        "#end-container",
-        { display: "none", opacity: 0, scale: 0, ease: "expo.in" },
-        { display: "grid", opacity: 1, scale: 1, ease: "expo.out" }
-      );
+      if (word_page === 6 || array.join("").toString() === selectedWord.join("").toString()){
+        const endTl = gsap.timeline({ delay: 0.8 });
+        endTl.to("#end-bg", { display: "block", opacity: 0.5, ease: "expo.out" });
+        endTl.to("#end-container", { display: "grid", opacity: 1, scale: 1, ease: "expo.out" });
+      }
     }
 
     retryButton.addEventListener("click", () => {
-      console.log(word_page);
-      console.log(letter_page);
+      playSFX(enterAudio);
+
+      letter_page = 0;
 
       const retryTl = gsap.timeline();
-      retryTl.fromTo(
-        retryButton,
-        { scale: 0.8, ease: "expo.in" },
-        { scale: 1, ease: "expo.out" },
-        "<"
-      );
-      retryTl.to(
-        "#end-container",
-        { opacity: 0, display: "none", scale: 0, ease: "expo.out" },
-        "<.1"
-      );
-      retryTl.to(
-        "#end-bg",
-        { opacity: 0, display: "none", ease: "expo.out" },
-        "<.3"
-      );
+      retryTl.fromTo(retryButton,{ scale: 0.8, ease: "expo.in" },{ scale: 1, ease: "expo.out" },"<");
+      retryTl.to("#end-container",{ opacity: 0, display: "none", scale: 0, ease: "expo.out" },"<.1");
+      retryTl.to("#end-bg",{ opacity: 0, display: "none", ease: "expo.out" },"<.3");
 
       for (e of button) {
-        gsap.to(e, {
-          backgroundColor: "#EDE0D4",
-          ease: "expo.out",
-          delay: 0.6,
-        });
+        gsap.to(e, {backgroundColor: "#EDE0D4",ease: "expo.out",delay: 0.6,});
       }
 
-      retryTl.to(letterContainer, {
-        scale: 0,
-        ease: "expo.out",
-        stagger: { from: "end", amount: 0.3 },
-      });
-      retryTl.to(letterContainer, {
-        backgroundColor: "#EDE0D4",
-        textContent: "",
-        ease: "expo.out",
-      });
-      retryTl.to(letterContainer, {
-        scale: 1,
-        ease: "expo.out",
-        stagger: { from: "start", amount: 0.3 },
-      });
-
+      retryTl.to(letterContainer, {scale: 0, ease: "expo.out",stagger: { from: "end", amount: 0.3 },});
+      retryTl.to(letterContainer, {backgroundColor: "#EDE0D4",textContent: "",ease: "expo.out",});
+      retryTl.to(letterContainer, {scale: 1, ease: "expo.out",stagger: { from: "start", amount: 0.3 },});
       getNewWord();
 
-      word_page = word_page - word_page;
-      letter_page = letter_page - letter_page;
-      console.log(word_page)
-      console.log(letter_page)
+      word_page = 0;
 
     });
 
@@ -407,10 +290,7 @@ fetch("words.txt")
     enter.addEventListener("mousedown", function () {
       enterAudio.currentTime = 0;
       enterAudio.play();
-      gsap.fromTo(
-        ".keyboard-enter",
-        { scale: 0.5, ease: "expo.in" },
-        { scale: 1, ease: "expo.out" }
+      gsap.fromTo(".keyboard-enter",{ scale: 0.5, ease: "expo.in" },{ scale: 1, ease: "expo.out" }
       );
 
       validateCompletion();
@@ -423,23 +303,14 @@ fetch("words.txt")
         if (word_container[word_page].children[4].textContent === "") {
           x.className = "active";
 
-          gsap.fromTo(
-            x,
-            { scale: 0.5, ease: "expo.in" },
-            { scale: 1, ease: "expo.out" }
-          );
+          gsap.fromTo(x,{ scale: 0.5, ease: "expo.in" },{ scale: 1, ease: "expo.out" });
 
-          letterAudio.currentTime = 0;
-          letterAudio.play();
+          playSFX(letterAudio)
 
           word_container[word_page].children[letter_page].textContent =
             x.textContent;
 
-          gsap.fromTo(
-            word_container[word_page].children[letter_page],
-            { scale: 0.5, ease: "expo.in" },
-            { scale: 1, ease: "expo.out" }
-          );
+          gsap.fromTo(word_container[word_page].children[letter_page],{ scale: 0.5, ease: "expo.in" },{ scale: 1, ease: "expo.out" });
           checkOverRange();
         }
       });
@@ -450,53 +321,43 @@ fetch("words.txt")
     Backspace.addEventListener("mousedown", function () {
       if (word_container[word_page].children[0].textContent !== "") {
         Backspace.className += " active";
-        backspaceAudio.currentTime = 0;
-        backspaceAudio.play();
 
-        gsap.fromTo(
-          ".keyboard-backspace",
-          { scale: 0.5, ease: "expo.in" },
-          { scale: 1, ease: "expo.out" }
+        playSFX(backspaceAudio)
+
+        gsap.fromTo(".keyboard-backspace",{ scale: 0.5, ease: "expo.in" },{ scale: 1, ease: "expo.out" }
         );
 
         checkUnderRange();
         word_container[word_page].children[letter_page].textContent = "";
-        gsap.fromTo(
-          word_container[word_page].children[letter_page],
-          { scale: 0.5, ease: "expo.in" },
-          { scale: 1, ease: "expo.out" }
-        );
+        gsap.fromTo(word_container[word_page].children[letter_page],{ scale: 0.5, ease: "expo.in" },{ scale: 1, ease: "expo.out" });
       }
     });
 
 
     function guideExit() {
 
-      enterAudio.currentTime = 0;
-      enterAudio.play();
+      playSFX(enterAudio);
 
       let exitAnimation = gsap.timeline();
-      exitAnimation.fromTo(
-        exitButton,
-        { scale: 0.5, ease: "expo.in" },
-        { scale: 1, ease: "expo.out" }
-      );
-      exitAnimation.to(
-        "#guide-container",
-        { scale: 0, opacity: 0, display: "none", ease: "expo.inout" },
-        "<.1"
-      );
-      exitAnimation.to(
-        "#guide-bg",
-        { opacity: 0, display: "none", ease: "expo.inout" },
-        "<.3"
-      );
+      exitAnimation.fromTo(exitButton,{ scale: 0.5, ease: "expo.in" },{ scale: 1, ease: "expo.out" });
+      exitAnimation.to("#guide-container",{ scale: 0, opacity: 0, display: "none", ease: "expo.inout" },"<.1");
+      exitAnimation.to("#guide-bg",{ opacity: 0, display: "none", ease: "expo.inout" },"<.3");
     }
 
 
     exitButton.addEventListener("click", () => {
       guideExit();
     });
+
+
+    function playSFX(sound){
+      sound.currentTime = 0;
+      sound.play()
+    }
+
+    function scaleAnimation(element){
+      gsap.fromTo(element, { scale: 0.5, ease: "expo.in" }, { scale: 1, ease: "expo.out" });
+    }
 
 
   });
@@ -507,34 +368,11 @@ fetch("words.txt")
 //START UP ANIMATION
 const startAnimation = gsap.timeline({ delay: 0.5 });
 
-startAnimation.from("header", {
-  scale: 0,
-  y: -60,
-  opacity: 0,
-  ease: "expo.out",
-});
-
-
-startAnimation.from(
-  ".word-container",
-  { scale: 0, opacity: 0, ease: "expo.out", stagger: { amount: 0.3 } },
-  "<.1"
-);
-
-
-startAnimation.from(
-  ".row",
-  { scale: 0, opacity: 0, ease: "expo.out", stagger: { amount: 0.2 } },
-  "<.3"
-);
-
-
+startAnimation.from("header", {scale: 0,y: -60,opacity: 0,ease: "expo.out",});
+startAnimation.from(".word-container",{ scale: 0, opacity: 0, ease: "expo.out", stagger: { amount: 0.3 } },"<.1");
+startAnimation.from(".row",{ scale: 0, opacity: 0, ease: "expo.out", stagger: { amount: 0.2 } },"<.3");
 startAnimation.from("#guide-bg", { display: "none", opacity: 0 }, "<.5");
-startAnimation.from(
-  "#guide-container",
-  { display: "none", opacity: 0, scale: 0, ease: "expo.inout" },
-  "<.1"
-);
+startAnimation.from("#guide-container",{ display: "none", opacity: 0, scale: 0, ease: "expo.inout" },"<.1");
 
 
 

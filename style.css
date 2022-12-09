@@ -137,7 +137,7 @@ main {
         left: 0;
         width: 100vw;
         height: 100vh;
-        opacity: 0.5;
+        opacity: 0;
         display: none;
         z-index: 500;
     }
