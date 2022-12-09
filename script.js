@@ -9,8 +9,8 @@ let separateWords;
 let arrayWords;
 let randomizeWord;
 let selectedWord;
-let letter_page;
-let word_page;
+let letter_page = 0;
+let word_page = 0;
 let word_checker;
 let array;
 
@@ -65,8 +65,8 @@ fetch("words.txt")
 
 
     //SET INDICATORS
-    letter_page = 0;
-    word_page = 0;
+    // letter_page = 0;
+    // word_page = 0;
 
 
     
@@ -142,21 +142,31 @@ fetch("words.txt")
             { scale: 0.5, ease: "expo.in" },
             { scale: 1, ease: "expo.out" }
           );
+          console.log(word_page)
+          console.log(letter_page)
 
-          
           validateCompletion();
         }
         return;
       });
-    }, 3000);
+    }, 2500);
+
+
 
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" && endContainer.style.display === "grid") {
+      if (e.key === "Enter" && endContainer.style.display !== "none" && endContainer.style.display !== '') {
         enterAudio.currentTime = 0;
         enterAudio.play();
-        retryClick();
+        retryButton.click();
+
+
+
       }
+      return
     });
+
+
+
 
     if (guideContainer.style.display !== "") {
       document.addEventListener("keydown", function (e) {
@@ -225,7 +235,7 @@ fetch("words.txt")
 
     //FUNCTION FOR GIVING THE RIGHT COLORS IN THE INPUT
     function letterAlgo() {
-      let algoTl = gsap.timeline({ delay: 0.5, ease: "expo.out" });
+      let algoTl = gsap.timeline({ delay: 0.5, ease: "expo.inout"});
 
       gsap.to(word_container[word_page].children, { scale: 0, opacity: 0 });
 
@@ -269,7 +279,7 @@ fetch("words.txt")
                 }
               }
             }
-          }
+          }else{
 
           algoTl.to(
             word_container[word_page].children[i],
@@ -285,6 +295,7 @@ fetch("words.txt")
               algoTl.to(e, { backgroundColor: "rgb(149,163,179)" }, "<");
             }
           }
+          }
         }
       }
 
@@ -292,7 +303,7 @@ fetch("words.txt")
         delay: 0.5,
         scale: 1,
         opacity: 1,
-        stagger: 0.2,
+        stagger: 0.15,
       });
     }
 
@@ -335,10 +346,11 @@ fetch("words.txt")
       );
     }
 
-    function retryClick() {
-      word_page = 0;
-      letter_page = 0;
-      const retryTl = gsap.timeline({});
+    retryButton.addEventListener("click", () => {
+      console.log(word_page);
+      console.log(letter_page);
+
+      const retryTl = gsap.timeline();
       retryTl.fromTo(
         retryButton,
         { scale: 0.8, ease: "expo.in" },
@@ -381,10 +393,12 @@ fetch("words.txt")
       });
 
       getNewWord();
-    }
 
-    retryButton.addEventListener("click", () => {
-      retryClick();
+      word_page = word_page - word_page;
+      letter_page = letter_page - letter_page;
+      console.log(word_page)
+      console.log(letter_page)
+
     });
 
     
