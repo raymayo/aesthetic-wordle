@@ -8,8 +8,6 @@ let separateWords;
 let arrayWords;
 let randomizeWord;
 let selectedWord;
-let letter_page = 0;
-let word_page = 0;
 let word_checker;
 let array;
 
@@ -24,6 +22,9 @@ let retryButton = document.querySelector('#retry-btn');
 let exitButton = document.querySelector('#exit-btn');
 let guideContainer = document.querySelector('#guide-container');
 let letterContainer = document.querySelectorAll('.letter-container');
+
+let letter_page = 0;
+let word_page = 0;
 
 //SOUND EFFECTS
 const letterAudio = new Audio('./click.mp3');
@@ -43,9 +44,6 @@ fetch('words.txt')
 			randomizeWord = Math.floor(Math.random() * arrayWords.length);
 			selectedWord = arrayWords[randomizeWord].toUpperCase().split('');
 			console.log(selectedWord);
-
-			console.log(word_page);
-			console.log(letter_page);
 		}
 
 		getNewWord();
@@ -55,50 +53,51 @@ fetch('words.txt')
 			document.addEventListener('keydown', function (e) {
 				if (word_page === 6) {
 					return;
-				}
-				if (
-					e.key.charCodeAt() <= 122 &&
-					e.key.charCodeAt() >= 97 &&
-					word_container[word_page].children[4].textContent === '' &&
-					guideContainer.style.display === 'none'
-				) {
-					playSFX(letterAudio);
+				} else {
+					if (
+						e.key.charCodeAt() <= 122 &&
+						e.key.charCodeAt() >= 97 &&
+						word_container[word_page].children[4].textContent === '' &&
+						guideContainer.style.display === 'none'
+					) {
+						playSFX(letterAudio);
 
-					if (word_page !== 6) {
-						word_container[word_page].children[letter_page].textContent =
-							e.key.toUpperCase();
-						gsap.fromTo(
-							word_container[word_page].children[letter_page],
-							{ scale: 0.5, ease: 'expo.in' },
-							{ scale: 1, ease: 'expo.out' }
-						);
+						if (word_page !== 6) {
+							word_container[word_page].children[letter_page].textContent =
+								e.key.toUpperCase();
+							gsap.fromTo(
+								word_container[word_page].children[letter_page],
+								{ scale: 0.5, ease: 'expo.in' },
+								{ scale: 1, ease: 'expo.out' }
+							);
 
-						for (let key of button) {
-							if (e.key.toUpperCase() === key.textContent) {
-								scaleAnimation(key);
+							for (let key of button) {
+								if (e.key.toUpperCase() === key.textContent) {
+									scaleAnimation(key);
+								}
 							}
+							checkOverRange();
 						}
-						checkOverRange();
+						return;
+					} else if (
+						e.key === 'Backspace' &&
+						word_container[word_page].children[0].textContent !== ''
+					) {
+						playSFX(backspaceAudio);
+
+						checkUnderRange();
+						word_container[word_page].children[letter_page].textContent = '';
+						scaleAnimation(word_container[word_page].children[letter_page]);
+						scaleAnimation('.keyboard-backspace');
+					} else if (e.key === 'Enter' && word_page <= 5) {
+						playSFX(enterAudio);
+
+						scaleAnimation('.keyboard-enter');
+						validateCompletion();
 					}
+
 					return;
-				} else if (
-					e.key === 'Backspace' &&
-					word_container[word_page].children[0].textContent !== ''
-				) {
-					playSFX(backspaceAudio);
-
-					checkUnderRange();
-					word_container[word_page].children[letter_page].textContent = '';
-					scaleAnimation(word_container[word_page].children[letter_page]);
-					scaleAnimation('.keyboard-backspace');
-				} else if (e.key === 'Enter' && word_page <= 5) {
-					playSFX(enterAudio);
-
-					scaleAnimation('.keyboard-enter');
-					validateCompletion();
 				}
-
-				return;
 			});
 		}, 1800);
 
