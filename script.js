@@ -420,7 +420,7 @@ fetch('words.txt')
 			let exitAnimation = gsap.timeline();
 			
 			exitAnimation.to( exitButton, { scale: 1, ease: 'expo.out' });
-			exitAnimation.to( '#guide-container', { scale: 0, opacity: 0, display: 'none', ease: 'expo.inout' }, '<.1');
+			exitAnimation.to( '#guide-container', { y: 100, opacity: 0, display: 'none', ease: 'expo.inout' }, '<.1');
 			exitAnimation.to('#guide-bg',{ opacity: 0, display: 'none', ease: 'expo.inout' },'<.3');
 		}
 
