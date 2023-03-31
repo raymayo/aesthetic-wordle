@@ -1,592 +1,511 @@
-/* body{
-    height: calc(var(--vh, 1vh) * 100)
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
+
+//Variables
+let word;
+let capitalText;
+let separateWords;
+let arrayWords;
+let randomizeWord;
+let selectedWord;
+let word_checker;
+let array;
+
+//Queries
+let popUpContainer = document.querySelector('#popUp-container');
+let endContainer = document.querySelector('#end-container');
+let button = document.querySelectorAll('.keyboard-key');
+let enter = document.querySelector('.keyboard-enter');
+let Backspace = document.querySelector('.keyboard-backspace');
+let word_container = document.querySelectorAll('.word-container');
+let retryButton = document.querySelector('#retry-btn');
+let exitButton = document.querySelector('#exit-btn');
+let guideContainer = document.querySelector('#guide-container');
+let letterContainer = document.querySelectorAll('.letter-container');
+
+let letter_page = 0;
+let word_page = 0;
+
+//SOUND EFFECTS
+const letterAudio = new Audio('./click.mp3');
+const enterAudio = new Audio('./enter.mp3');
+const backspaceAudio = new Audio('./backspace.mp3');
+
+//FETCH WORDS
+fetch('words.txt')
+	.then((response) => response.text())
+	.then((text) => (word = text))
+	.then(function (word) {
+		//FUNCTION FOR GETTING WORD
+		function getNewWord() {
+			capitalText = word.toUpperCase();
+			separateWords = capitalText.match(/.{1,5}/g);
+			arrayWords = Array.from(separateWords);
+			randomizeWord = Math.floor(Math.random() * arrayWords.length);
+			selectedWord = arrayWords[randomizeWord].toUpperCase().split('');
+			console.log(selectedWord);
+		}
+
+		getNewWord();
+
+		setTimeout(() => {
+			//TYPE EVENTS FOR KEYBOARD
+			document.addEventListener('keydown', function (e) {
+				if (word_page === 6) {
+					return;
+				} else {
+					if (
+						e.key.charCodeAt() <= 122 &&
+						e.key.charCodeAt() >= 97 &&
+						word_container[word_page].children[4].textContent === '' &&
+						guideContainer.style.display === 'none'
+					) {
+						playSFX(letterAudio);
+
+						if (word_page !== 6) {
+							word_container[word_page].children[letter_page].textContent =
+								e.key.toUpperCase();
+							gsap.fromTo(
+								word_container[word_page].children[letter_page],
+								{ scale: 0.5, ease: 'expo.in' },
+								{ scale: 1, ease: 'expo.out' }
+							);
+
+							for (let key of button) {
+								if (e.key.toUpperCase() === key.textContent) {
+									scaleAnimation(key);
+								}
+							}
+							checkOverRange();
+						}
+						return;
+					} else if (
+						e.key === 'Backspace' &&
+						word_container[word_page].children[0].textContent !== ''
+					) {
+						playSFX(backspaceAudio);
+
+						checkUnderRange();
+						word_container[word_page].children[letter_page].textContent = '';
+						scaleAnimation(word_container[word_page].children[letter_page]);
+						scaleAnimation('.keyboard-backspace');
+					} else if (e.key === 'Enter' && word_page <= 5) {
+						playSFX(enterAudio);
+
+						scaleAnimation('.keyboard-enter');
+						validateCompletion();
+					}
+
+					return;
+				}
+			});
+		}, 1800);
+
+		if (guideContainer.style.display !== '') {
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Enter') {
+					guideExit();
+				}
+			});
+		}
+
+		//CHECK IF INPUT IS CORRECT OR NOT
+		function validateCompletion() {
+			word_checker = word_container[word_page];
+			array = Array.from(word_checker.innerText);
+			array = array.filter((e) => e % 2 !== 0);
+
+			if (array.join('').toString() === selectedWord.join('').toString()) {
+				letterAlgo();
+				popUp('Well Played!', '#44af69');
+				retry();
+			} else if (
+				word_container[5].children[4].textContent !== '' &&
+				word_page > 0
+			) {
+				letterAlgo();
+				popUp(`The Word is ${selectedWord.join('')}`, '#44af69');
+				retry();
+			} else {
+				checkIncomplete();
+			}
+			return;
+		}
+
+		//FUNCTION FOR CHECKING IF ALL LETTERS ARE FILLED
+		function checkIncomplete() {
+			if (word_container[word_page].children[4].textContent !== '') {
+				checkInput();
+			} else if (letter_page > 0) {
+				popUp('Not enough letters', '#EDE0D4');
+			}
+		}
+
+		//FUNCTION FOR CHECKING IF THE INPUT IS IN THE WORD LIST
+		function checkInput() {
+			if (arrayWords.includes(array.join('').toString())) {
+				letterAlgo();
+				letter_page = 0;
+			} else {
+				popUp('Not in word list', '#EDE0D4');
+			}
+		}
+
+		function getNumOfOccurrencesInWord(word, letter) {
+			let result = 0;
+			for (let i = 0; i < word.length; i++) {
+				if (word[i] === letter) {
+					result++;
+				}
+			}
+			return result;
+		}
+
+		function getPositionOfOccurrence(word, letter, position) {
+			let result = 0;
+			for (let i = 0; i <= position; i++) {
+				if (word[i] === letter) {
+					result++;
+				}
+			}
+			return result;
+		}
+
+		//FUNCTION FOR GIVING THE RIGHT COLORS IN THE INPUT
+		function letterAlgo() {
+			let algoTl = gsap.timeline({ delay: 0.5, ease: 'expo.inout' });
+
+			gsap.to(word_container[word_page].children, {
+				scale: 0,
+				opacity: 0,
+				ease: 'expo.inout',
+				stagger: 0.05,
+			});
+
+			for (let i = 0; i < 5; i++) {
+				let box = array.join('');
+				let guess = array.join('');
+				let letter = box[i];
+				let secret = selectedWord.join('');
+
+				const numOfOccurrencesSecret = getNumOfOccurrencesInWord(
+					secret,
+					letter
+				);
+				const numOfOccurrencesGuess = getNumOfOccurrencesInWord(guess, letter);
+				const letterPosition = getPositionOfOccurrence(guess, letter, i);
+
+				if (
+					numOfOccurrencesGuess > numOfOccurrencesSecret &&
+					letterPosition > numOfOccurrencesSecret
+				) {
+					algoTl.to(
+						word_container[word_page].children[i],
+						{ backgroundColor: 'rgb(149,163,179)' },
+						'<'
+					);
+				} else {
+					if (array[i] === selectedWord[i]) {
+						algoTl.to(
+							word_container[word_page].children[i],
+							{ backgroundColor: 'rgb(68,175,105)' },
+							'<'
+						);
+
+						for (e of button) {
+							if (
+								word_container[word_page].children[i].textContent ===
+								e.textContent
+							) {
+								algoTl.to(e, { backgroundColor: 'rgb(68,175,105)' }, '<');
+							}
+						}
+					} else if (selectedWord.includes(array[i])) {
+						algoTl.to(
+							word_container[word_page].children[i],
+							{ backgroundColor: 'rgb(234,157,52)' },
+							'<'
+						);
+
+						for (e of button) {
+							if (
+								word_container[word_page].children[i].textContent ===
+								e.textContent
+							) {
+								if (e.style.backgroundColor === 'rgb(68, 175, 105)') {
+									algoTl.to(e, { backgroundColor: 'rgb(68,175,105)' }, '<');
+								} else if (
+									e.style.backgroundColor !== 'rgb(68, 175, 105)' &&
+									e.style.backgroundColor !== '#ede0d4'
+								) {
+									algoTl.to(e, { backgroundColor: 'rgb(234,157,52)' }, '<');
+								}
+							}
+						}
+					} else {
+						algoTl.to(
+							word_container[word_page].children[i],
+							{ backgroundColor: 'rgb(149,163,179)' },
+							'<'
+						);
+
+						for (e of button) {
+							if (
+								word_container[word_page].children[i].textContent ===
+								e.textContent
+							) {
+								algoTl.to(e, { backgroundColor: 'rgb(149,163,179)' }, '<');
+							}
+						}
+					}
+				}
+			}
+
+			gsap.to(word_container[word_page].children, {
+				delay: 0.4,
+				scale: 1,
+				opacity: 1,
+				stagger: 0.1,
+				ease: 'expo.inout',
+			});
+
+			word_page++;
+		}
+
+		//POP UP MESSAGE
+		function popUp(message, bg) {
+			let popUpMessage = document.createElement('p');
+			let popUpTimeline = gsap.timeline();
+
+			popUpContainer.innerHTML = '';
+
+			popUpMessage.textContent = message;
+			popUpMessage.classList.add('pop-up');
+			popUpContainer.appendChild(popUpMessage);
+			popUpMessage.style.backgroundColor = bg;
+			popUpTimeline.to('.pop-up', {
+				display: 'block',
+				opacity: 1,
+				ease: 'expo.out',
+				y: 30,
+			});
+			popUpTimeline.to('.pop-up', {
+				delay: 3,
+				display: 'none',
+				opacity: 0,
+				ease: 'expo.out',
+			});
+		}
+
+		function retry() {
+			if (
+				word_page === 6 ||
+				array.join('').toString() === selectedWord.join('').toString()
+			) {
+				const endTl = gsap.timeline({ delay: 0.8 });
+				endTl.to('#end-bg', {
+					display: 'block',
+					opacity: 0.5,
+					ease: 'expo.out',
+				});
+				endTl.to('#end-container', {
+					display: 'grid',
+					opacity: 1,
+					scale: 1,
+					ease: 'expo.out',
+				});
+			}
+		}
+
+		retryButton.addEventListener('click', () => {
+			playSFX(enterAudio);
+
+			letter_page = 0;
+
+			const retryTl = gsap.timeline();
+			retryTl.fromTo(
+				retryButton,
+				{ scale: 0.8, ease: 'expo.in' },
+				{ scale: 1, ease: 'expo.out' },
+				'<'
+			);
+			retryTl.to(
+				'#end-container',
+				{ opacity: 0, display: 'none', scale: 0, ease: 'expo.out' },
+				'<.1'
+			);
+			retryTl.to(
+				'#end-bg',
+				{ opacity: 0, display: 'none', ease: 'expo.out' },
+				'<.3'
+			);
+
+			for (e of button) {
+				gsap.to(e, {
+					backgroundColor: '#EDE0D4',
+					ease: 'expo.out',
+					delay: 0.6,
+				});
+			}
+
+			retryTl.to(letterContainer, {
+				scale: 0,
+				ease: 'expo.out',
+				stagger: { from: 'end', amount: 0.3 },
+			});
+			retryTl.to(letterContainer, {
+				backgroundColor: '#EDE0D4',
+				textContent: '',
+				ease: 'expo.out',
+			});
+			retryTl.to(letterContainer, {
+				scale: 1,
+				ease: 'expo.out',
+				stagger: { from: 'start', amount: 0.3 },
+			});
+			getNewWord();
+
+			word_page = 0;
+		});
+
+		//MOBILE KEYBOARD EVENT LISTENER
+		enter.addEventListener('mousedown', function () {
+			enterAudio.currentTime = 0;
+			enterAudio.play();
+			gsap.fromTo(
+				'.keyboard-enter',
+				{ scale: 0.5, ease: 'expo.in' },
+				{ scale: 1, ease: 'expo.out' }
+			);
+
+			validateCompletion();
+		});
+
+		for (let x of button) {
+			x.addEventListener('mousedown', function () {
+				if (word_container[word_page].children[4].textContent === '') {
+					x.className = 'active';
+
+					gsap.fromTo(
+						x,
+						{ scale: 0.5, ease: 'expo.in' },
+						{ scale: 1, ease: 'expo.out' }
+					);
+
+					playSFX(letterAudio);
+
+					word_container[word_page].children[letter_page].textContent =
+						x.textContent;
+
+					gsap.fromTo(
+						word_container[word_page].children[letter_page],
+						{ scale: 0.5, ease: 'expo.in' },
+						{ scale: 1, ease: 'expo.out' }
+					);
+					checkOverRange();
+				}
+			});
+		}
+
+		Backspace.addEventListener('mousedown', function () {
+			if (word_container[word_page].children[0].textContent !== '') {
+				Backspace.className += ' active';
+
+				playSFX(backspaceAudio);
+
+				gsap.fromTo(
+					'.keyboard-backspace',
+					{ scale: 0.5, ease: 'expo.in' },
+					{ scale: 1, ease: 'expo.out' }
+				);
+
+				checkUnderRange();
+				word_container[word_page].children[letter_page].textContent = '';
+				gsap.fromTo(
+					word_container[word_page].children[letter_page],
+					{ scale: 0.5, ease: 'expo.in' },
+					{ scale: 1, ease: 'expo.out' }
+				);
+			}
+		});
+
+		function guideExit() {
+			playSFX(enterAudio);
+
+			let exitAnimation = gsap.timeline();
+			exitAnimation.fromTo(
+				exitButton,
+				{ scale: 0.5, ease: 'expo.in' },
+				{ scale: 1, ease: 'expo.out' }
+			);
+			exitAnimation.to(
+				'#guide-container',
+				{ scale: 0, opacity: 0, display: 'none', ease: 'expo.inout' },
+				'<.1'
+			);
+			exitAnimation.to(
+				'#guide-bg',
+				{ opacity: 0, display: 'none', ease: 'expo.inout' },
+				'<.3'
+			);
+		}
+
+		exitButton.addEventListener('click', () => {
+			guideExit();
+		});
+
+		function playSFX(sound) {
+			sound.currentTime = 0;
+			sound.play();
+		}
+
+		function scaleAnimation(element) {
+			gsap.fromTo(
+				element,
+				{ scale: 0.5, ease: 'expo.in' },
+				{ scale: 1, ease: 'expo.out' }
+			);
+		}
+	});
+
+//START UP ANIMATION
+const startAnimation = gsap.timeline({ delay: 0.5 });
+
+startAnimation.from('header', {
+	scale: 0,
+	y: -60,
+	opacity: 0,
+	ease: 'expo.out',
+});
+startAnimation.from(
+	'.word-container',
+	{ scale: 0, opacity: 0, ease: 'expo.out', stagger: { amount: 0.3 } },
+	'<.1'
+);
+startAnimation.from(
+	'.row',
+	{ scale: 0, opacity: 0, ease: 'expo.out', stagger: { amount: 0.2 } },
+	'<.3'
+);
+startAnimation.from('#guide-bg', { display: 'none', opacity: 0 }, '<.5');
+startAnimation.from(
+	'#guide-container',
+	{ display: 'none', opacity: 0, scale: 0, ease: 'expo.inout' },
+	'<.1'
+);
+
+function checkOverRange() {
+	if (letter_page === 5) {
+		return;
+	} else {
+		letter_page++;
+	}
 }
 
-body > *{ border: solid 1px salmon;}
-main > *{ border: solid 1px red;}
-
-:root {
-    --background: #faf4ed;
-    --surface: #e7d6c5;
-    --color: #171a21;
-    --font: "Quicksand", sans-serif
+function checkUnderRange() {
+	if (letter_page === 0) {
+		return;
+	} else {
+		letter_page--;
+	}
 }
-
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    color: var(--color)
-}
-
-body {
-    width: 100vw;
-    background-color: var(--background);
-    overflow: hidden
-}
-
-main {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: var(--background);
-    display: grid;
-    row-gap: 5%;
-    place-items: center;
-    align-content: space-between;
-    justify-content: center
-}
-
-.word-container {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-gap: 5px
-}
-
-@media screen and (orientation:portrait) {
-
-    .letter-container,
-    .pop-up,
-    header {
-        font-family: var(--font)
-    }
-
-    .pop-up,
-    button {
-        font-weight: 700
-    }
-
-    #end-bg,
-    .pop-up {
-        opacity: 0;
-        display: none
-    }
-
-    #end-bg,
-    #guide-bg {
-        background: #171a21;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 500;
-        position: absolute
-    }
-
-    #guide-container div h4,
-    #guide-container div:first-child,
-    h3,
-    h4 {
-        margin-bottom: calc(1vw + 1vh)
-    }
-
-    #end-bg,
-    #end-container,
-    #exit-btn,
-    #guide-bg {
-        position: absolute
-    }
-
-    #exit-btn,
-    button {
-        text-align: center;
-        background-color: var(--surface);
-        color: var(--color);
-        -webkit-tap-highlight-color: transparent
-    }
-
-    #container {
-        width: calc(25vw + 25vh);
-        height: calc(30vw + 30vh);
-        display: grid;
-        grid-template-rows: repeat(6, 1fr);
-        row-gap: 5px;
-        box-sizing: border-box
-    }
-
-    .letter-container {
-        background-color: var(--surface);
-        color: var(--color);
-        border-radius: 8px;
-        font-size: calc(3vw + 3vh);
-        font-weight: 700;
-        text-align: center;
-        padding-top: 5%
-    }
-
-    #exit-btn,
-    .pop-up {
-        font-size: calc(1.5vw + 1.5vh)
-    }
-
-    header {
-        width: 100vw;
-        text-align: center;
-        display: flex;
-        place-items: center;
-        padding: calc(1.5vw + 1.5vh) 0
-    }
-
-    header h1 {
-        height: 100%;
-        margin: auto;
-        color: var(--color);
-        font-size: calc(3.5vh + 3.5vw)
-    }
-
-    .pop-up {
-        border-radius: 10px;
-        margin-bottom: 3%;
-        padding: .3em;
-        color: #000
-    }
-
-    #popUp-container {
-        text-align: center;
-        width: calc(20vw + 20vh);
-        height: .1vh;
-        transform: translateY(calc(-3.5vw + -3.5vh));
-        pointer-events: none
-    }
-
-    .keyboard {
-        width: 100vw;
-        text-align: center;
-        align-items: center;
-        padding-top: 4%
-    }
-
-    .row {
-        height: 14vw;
-        width: 100vw;
-        display: -ms-inline-grid;
-        padding-bottom: 1%
-    }
-
-    button {
-        height: 90%;
-        width: 8%;
-        font-size: calc(2vw + 2vh);
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-family: Quicksand, sans-serif
-    }
-
-    #end-container,
-    #guide-container {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        width: 80%;
-        font-family: var(--font);
-        border-radius: 10px
-    }
-
-    #end-container {
-        background: rgba(250, 244, 237, 0);
-        height: 60%;
-        place-content: center;
-        display: none
-    }
-
-    #retry-btn {
-        width: calc(13vw + 13vh);
-        height: 3rem
-    }
-
-    #guide-bg {
-        opacity: .5
-    }
-
-    #guide-container {
-        position: relative;
-        background: #faf4ed;
-        display: grid;
-        justify-content: center;
-        align-content: space-evenly;
-        padding: calc(2vw + 2vh)
-    }
-
-    #guide-container div h4 {
-        line-height: 1.5
-    }
-
-    h1 {
-        font-size: calc(2.5vw + 2.5vh)
-    }
-
-    h2 {
-        padding-bottom: calc(.8vw + .8vh);
-        border-bottom: solid 3px var(--color)
-    }
-
-    h3 {
-        font-size: calc(2vw + 2vh)
-    }
-
-    h4 {
-        font-size: calc(1.2vw + 1.2vh)
-    }
-
-    span {
-        padding: 5px;
-        border-radius: 5px
-    }
-
-    .guide-colors-1 {
-        background-color: #44af69
-    }
-
-    .guide-colors-2 {
-        background-color: #ea9d34
-    }
-
-    .guide-colors-3 {
-        background-color: #95a3b3
-    }
-
-    #exit-btn {
-        width: calc(2.5vw + 2.5vh);
-        height: calc(2.5vw + 2.5vh);
-        top: calc(1vw + 1vh);
-        right: calc(1vw + 1vh);
-        padding: 0;
-        border: none;
-        border-radius: 6px
-    }
-}
-
-@media screen and (orientation:landscape) {
-
-    .letter-container,
-    .pop-up,
-    header {
-        font-family: var(--font)
-    }
-
-    .pop-up,
-    button {
-        font-weight: 700
-    }
-
-    #end-bg,
-    #guide-bg {
-        background: #171a21;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        z-index: 500;
-        position: absolute
-    }
-
-    #guide-container div h4,
-    #guide-container div:first-child,
-    h3,
-    h4 {
-        margin-bottom: calc(1vw + 1vh)
-    }
-
-    #end-bg,
-    #end-container,
-    #exit-btn,
-    #guide-bg {
-        position: absolute
-    }
-
-    #exit-btn,
-    button {
-        text-align: center;
-        background-color: var(--surface);
-        color: var(--color);
-        -webkit-tap-highlight-color: transparent
-    }
-
-    header {
-        width: 100vw;
-        text-align: center;
-        display: flex;
-        place-items: center;
-        padding-top: calc(.8vw + .8vh)
-    }
-
-    header h1 {
-        height: 100%;
-        margin: auto;
-        color: var(--color);
-        font-size: calc(1.8vh + 1.8vw)
-    }
-
-    #container {
-        width: calc(13vw + 13vh);
-        height: calc(15vw + 15vh);
-        display: grid;
-        grid-template-rows: repeat(6, 1fr);
-        row-gap: 5px;
-        box-sizing: border-box
-    }
-
-    .letter-container {
-        background-color: var(--surface);
-        color: var(--color);
-        border-radius: 8px;
-        font-size: calc(1.5vw + 1.5vh);
-        font-weight: 700;
-        text-align: center;
-        padding-top: 5%
-    }
-
-    #popUp-container {
-        text-align: center;
-        width: calc(10vw + 10vh);
-        height: .1vh;
-        transform: translateY(calc(-1.5vw + -1.5vh));
-        pointer-events: none
-    }
-
-    .pop-up {
-        border-radius: 10px;
-        font-size: calc(.8vw + .8vh);
-        margin-bottom: 3%;
-        padding: .3em;
-        display: none;
-        opacity: 0;
-        color: var(--color)
-    }
-
-    .keyboard {
-        width: 100vw;
-        text-align: center;
-        align-items: center
-    }
-
-    .row {
-        height: 4vw;
-        width: 100vw;
-        display: -ms-inline-grid;
-        padding-bottom: 1%
-    }
-
-    button {
-        height: 100%;
-        width: 2%;
-        font-size: calc(1vw + 1vh);
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-family: Quicksand, sans-serif
-    }
-
-    #end-container,
-    #guide-container {
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        font-family: var(--font);
-        border-radius: 10px
-    }
-
-    #end-bg {
-        opacity: .9;
-        display: none
-    }
-
-    #end-container {
-        background: rgba(250, 244, 237, 0);
-        width: 25%;
-        height: 60%;
-        place-content: center;
-        display: none
-    }
-
-    #retry-btn {
-        width: calc(8vw + 8vh);
-        height: calc(2vw + 2vh)
-    }
-
-    #guide-bg {
-        opacity: .5
-    }
-
-    #guide-container {
-        position: relative;
-        background: #faf4ed;
-        width: 40%;
-        display: grid;
-        justify-content: center;
-        align-content: space-evenly;
-        padding: calc(2vw + 2vh)
-    }
-
-    #guide-container div h4 {
-        line-height: 1.5
-    }
-
-    h1 {
-        font-size: calc(1.5vw + 1.5vh);
-        padding-bottom: calc(.2vw + .2vh)
-    }
-
-    h2 {
-        padding-bottom: calc(.4vw + .4vh);
-        border-bottom: solid 3px var(--color)
-    }
-
-    h3 {
-        font-size: calc(1.3vw + 1.3vh)
-    }
-
-    #exit-btn,
-    h4 {
-        font-size: calc(1vw + 1vh)
-    }
-
-    span {
-        padding: calc(.3vw + .3vh);
-        border-radius: 5px
-    }
-
-    .guide-colors-1 {
-        background-color: #44af69
-    }
-
-    .guide-colors-2 {
-        background-color: #ea9d34
-    }
-
-    .guide-colors-3 {
-        background-color: #95a3b3
-    }
-
-    #exit-btn {
-        width: calc(1.5vw + 1.5vh);
-        height: calc(1.5vw + 1.5vh);
-        top: calc(1vw + 1vh);
-        right: calc(1vw + 1vh);
-        padding: 0;
-        border: none;
-        border-radius: 6px
-    }
-} */
-
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Quicksand", sans-serif;
-}
-main > * {
-    border: solid 1px blue;
-}
-
-#container{
-    display: grid;
-    place-content: start center;
-}
-header{
-    display: grid;
-    place-items: center;
-    font-size: clamp(1.00rem, calc(0.65rem + 1.74vw), 2.00rem);
-}
-.keyboard{
-    display: grid;
-    place-content: start;
-    place-items: center;
-    row-gap: .5rem;
-}
-
-.keyboard-key, .keyboard-backspace, .keyboard-enter{
-    font-size: clamp(1.00rem, calc(0.83rem + 0.87vw), 1.50rem);
-    width: clamp(1.56rem, calc(1.02rem + 2.72vw), 3.13rem);
-    height: clamp(2.19rem, calc(1.64rem + 2.72vw), 3.75rem);
-        /* w min 30 max 35 */
-    /* h min 40 max 35 */
-}
-
-
-.keyboard > *{
-    border: solid 1px red;
-}
-
-.word-container{
-    display: grid;
-    place-content: center;
-    place-items: center;
-    grid-template-columns: repeat(5, clamp(3.75rem, calc(3.10rem + 3.26vw), 5.63rem));
-}
-
-.letter-container{
-    display: grid;
-    place-items: center;
-    border: solid 1px magenta;
-    width: clamp(3.75rem, calc(3.10rem + 3.26vw), 5.63rem);
-    height: clamp(3.75rem, calc(3.10rem + 3.26vw), 5.63rem);
-}
-
-
-
-#guide-bg {
-    border: solid 1px red;
-    position: absolute;
-    width: 100vw;
-    height: 120vh;
-    background-color: black;
-    opacity: 0.5;
-    top: 0;
-    left: 0;
-    /* display: none; */
-}
-
-#guide-container {
-    border: solid 1px yellow;
-    display: grid;
-    width: min(85%, 45rem);
-    padding: 1rem;
-    gap: 1rem;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-
-#game-rules{
-    display: grid;
-    gap: .5rem;
-}
-
-#exit-btn{
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-
-body{
-    width: 100vw;
-    height: 100vh;
-    height: calc(var(--vh, 1vh) * 100);
-    display: grid;
-    place-content: center;
-    overflow: hidden;
-    transform: translate(0, clamp(-1.25rem, calc(-0.41rem + -1.09vw), -0.62rem));
-}
-
-main{
-    height: calc(var(--vh, 1vh) * 100);
-    display: grid;
-    place-content: center;
-    gap: 1.5rem;
-}
-
-#end-bg{
-    display: none;
-}
-
-#end-container{
-    display: none;
-}
-
