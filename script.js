@@ -44,6 +44,7 @@ fetch('words.txt')
 			randomizeWord = Math.floor(Math.random() * arrayWords.length);
 			selectedWord = arrayWords[randomizeWord].toUpperCase().split('');
 			console.log(selectedWord);
+			// alert(selectedWord)
 		}
 
 		getNewWord();
@@ -283,12 +284,7 @@ fetch('words.txt')
 			popUpMessage.classList.add('pop-up');
 			popUpContainer.appendChild(popUpMessage);
 			popUpMessage.style.backgroundColor = bg;
-			popUpTimeline.to('.pop-up', {
-				display: 'block',
-				opacity: 1,
-				ease: 'expo.out',
-				y: 30,
-			});
+			popUpTimeline.fromTo('.pop-up', {display: 'block',opacity: 0,y:-50, ease: 'expo.out'}, {display: 'block',opacity: 1,y:0, ease: 'expo.out'});
 			popUpTimeline.to('.pop-up', {
 				delay: 3,
 				display: 'none',
@@ -298,127 +294,108 @@ fetch('words.txt')
 		}
 
 		function retry() {
-			if (
-				word_page === 6 ||
-				array.join('').toString() === selectedWord.join('').toString()
-			) {
-				const endTl = gsap.timeline({ delay: 0.8 });
-				endTl.to('#end-bg', {
-					display: 'block',
-					opacity: 0.5,
-					ease: 'expo.out',
-				});
-				endTl.to('#end-container', {
-					display: 'grid',
-					opacity: 1,
-					scale: 1,
-					ease: 'expo.out',
-				});
+			if (word_page === 6) {
+				showEndScreen()
+				retryButton.textContent = `Play Again`
+			}else if(array.join('').toString() === selectedWord.join('').toString()){
+				showEndScreen()
+				retryButton.textContent = `Play Again`
+
 			}
+			return;
 		}
 
-		retryButton.addEventListener('click', () => {
+		function showEndScreen(){
+			const endTl = gsap.timeline({ delay: 0.8 });
+			endTl.fromTo('#end-bg', {display: 'none', opacity: 0, ease: 'expo.out'}, {display: 'block', opacity: 0.5, ease: 'expo.out'});
+			endTl.fromTo('#end-container', {display: 'none',opacity: 0,scale: 0, ease: 'expo.out'}, {display: 'grid',opacity: 1,scale: 1,ease: 'expo.out'},'<');
+		}
+
+		retryButton.addEventListener('pointerdown', () => {
 			playSFX(enterAudio);
+			gsap.to( retryButton, { scale: 0.7, ease: 'expo.out' });
+		
+		});
 
+		retryButton.addEventListener('pointerleave', () => {
+			playSFX(enterAudio);
+			gsap.to( retryButton, { scale: 1, ease: 'expo.out' });
+		
+		});
+
+		retryButton.addEventListener('pointerup', () => {
 			letter_page = 0;
-
 			const retryTl = gsap.timeline();
-			retryTl.fromTo(
-				retryButton,
-				{ scale: 0.8, ease: 'expo.in' },
-				{ scale: 1, ease: 'expo.out' },
-				'<'
-			);
-			retryTl.to(
-				'#end-container',
-				{ opacity: 0, display: 'none', scale: 0, ease: 'expo.out' },
-				'<.1'
-			);
-			retryTl.to(
-				'#end-bg',
-				{ opacity: 0, display: 'none', ease: 'expo.out' },
-				'<.3'
-			);
+			retryTl.to( retryButton, { scale: 1, ease: 'expo.out' });
+			retryTl.to( '#end-container', { opacity: 0, display: 'none', ease: 'expo.out' }, '<.1');
+			retryTl.to( '#end-bg', { opacity: 0, display: 'none', ease: 'expo.out' }, '<.3');
 
 			for (e of button) {
-				gsap.to(e, {
-					backgroundColor: '#EDE0D4',
-					ease: 'expo.out',
-					delay: 0.6,
-				});
+				gsap.to(e, { backgroundColor: '#EDE0D4', ease: 'expo.out', delay: 0.6, duration: 2});
 			}
 
-			retryTl.to(letterContainer, {
-				scale: 0,
-				ease: 'expo.out',
-				stagger: { from: 'end', amount: 0.3 },
-			});
-			retryTl.to(letterContainer, {
-				backgroundColor: '#EDE0D4',
-				textContent: '',
-				ease: 'expo.out',
-			});
-			retryTl.to(letterContainer, {
-				scale: 1,
-				ease: 'expo.out',
-				stagger: { from: 'start', amount: 0.3 },
-			});
+			retryTl.to(letterContainer, { scale: 0, ease: 'expo.out', stagger: { from: 'end', amount: 0.3 },});
+			retryTl.to(letterContainer, { backgroundColor: '#EDE0D4', textContent: '', ease: 'expo.out',});
+			retryTl.to(letterContainer, { scale: 1, ease: 'expo.out', stagger: { from: 'start', amount: 0.3 },});
 			getNewWord();
 
 			word_page = 0;
 		});
 
 		//MOBILE KEYBOARD EVENT LISTENER
-		enter.addEventListener('mousedown', function () {
+		enter.addEventListener('pointerdown', function () {
 			enterAudio.currentTime = 0;
 			enterAudio.play();
-			gsap.fromTo(
-				'.keyboard-enter',
-				{ scale: 0.5, ease: 'expo.in' },
-				{ scale: 1, ease: 'expo.out' }
-			);
-
+			gsap.to('.keyboard-enter',{ scale: 0.7, ease: 'expo.out' });
 			validateCompletion();
 		});
 
+
+		enter.addEventListener('pointerup', function () {
+			enterAudio.currentTime = 0;
+			enterAudio.play();
+			gsap.to('.keyboard-enter', { scale: 1, ease: 'expo.out' });
+		});
+
+		enter.addEventListener('pointerleave', function () {
+			gsap.to('.keyboard-enter', { scale: 1, ease: 'expo.out' });
+		});
+
+
+
 		for (let x of button) {
-			x.addEventListener('mousedown', function () {
+			x.addEventListener('pointerdown', function () {
+				gsap.to( x, { scale: 0.7, ease: 'expo.out' });
+				playSFX(letterAudio);
 				if (word_container[word_page].children[4].textContent === '') {
 					x.className = 'keyboard-key active';
-
-					gsap.fromTo(
-						x,
-						{ scale: 0.5, ease: 'expo.in' },
-						{ scale: 1, ease: 'expo.out' }
-					);
-
-					playSFX(letterAudio);
-
-					word_container[word_page].children[letter_page].textContent =
-						x.textContent;
-
-					gsap.fromTo(
-						word_container[word_page].children[letter_page],
-						{ scale: 0.5, ease: 'expo.in' },
-						{ scale: 1, ease: 'expo.out' }
-					);
+					word_container[word_page].children[letter_page].textContent = x.textContent;
+					gsap.fromTo( word_container[word_page].children[letter_page], { scale: 0.5, ease: 'expo.in' }, { scale: 1, ease: 'expo.out' });
 					checkOverRange();
 				}
 			});
 		}
 
-		Backspace.addEventListener('mousedown', function () {
+
+
+		for (let x of button) {
+			x.addEventListener('pointerup', function () {
+					gsap.to( x, { scale: 1, ease: 'expo.out' });
+					playSFX(letterAudio);
+			});
+		}
+
+		for (let x of button) {
+			x.addEventListener('pointerleave', function () {
+					gsap.to( x, { scale: 1, ease: 'expo.out' });
+			});
+		}
+
+		Backspace.addEventListener('pointerdown', function () {
+			gsap.to( '.keyboard-backspace', { scale: 0.7, ease: 'expo.out' });
+			playSFX(backspaceAudio);
 			if (word_container[word_page].children[0].textContent !== '') {
 				Backspace.className = 'keyboard-backspace active';
-
-				playSFX(backspaceAudio);
-
-				gsap.fromTo(
-					'.keyboard-backspace',
-					{ scale: 0.5, ease: 'expo.in' },
-					{ scale: 1, ease: 'expo.out' }
-				);
-
 				checkUnderRange();
 				word_container[word_page].children[letter_page].textContent = '';
 				gsap.fromTo(
@@ -429,28 +406,37 @@ fetch('words.txt')
 			}
 		});
 
-		function guideExit() {
-			playSFX(enterAudio);
 
+		Backspace.addEventListener('pointerup', function () {
+			gsap.to( '.keyboard-backspace', { scale: 1, ease: 'expo.out' });
+			playSFX(backspaceAudio);
+		});
+
+		Backspace.addEventListener('pointerleave', function () {
+			gsap.to( '.keyboard-backspace', { scale: 1, ease: 'expo.out' });
+		});
+
+		function guideExit() {
 			let exitAnimation = gsap.timeline();
-			exitAnimation.fromTo(
-				exitButton,
-				{ scale: 0.5, ease: 'expo.in' },
-				{ scale: 1, ease: 'expo.out' }
-			);
-			exitAnimation.to(
-				'#guide-container',
-				{ scale: 0, opacity: 0, display: 'none', ease: 'expo.inout' },
-				'<.1'
-			);
-			exitAnimation.to(
-				'#guide-bg',
-				{ opacity: 0, display: 'none', ease: 'expo.inout' },
-				'<.3'
-			);
+			
+			exitAnimation.to( exitButton, { scale: 1, ease: 'expo.out' });
+			exitAnimation.to( '#guide-container', { scale: 0, opacity: 0, display: 'none', ease: 'expo.inout' }, '<.1');
+			exitAnimation.to('#guide-bg',{ opacity: 0, display: 'none', ease: 'expo.inout' },'<.3');
 		}
 
-		exitButton.addEventListener('click', () => {
+		exitButton.addEventListener('pointerdown', () => {
+			gsap.to( exitButton, { scale: 0.8, ease: 'expo.out' })
+			playSFX(enterAudio);
+			
+		});
+		
+		exitButton.addEventListener('pointerleave', () => {
+			gsap.to( exitButton, { scale: 1, ease: 'expo.out' })
+		});
+
+
+
+		exitButton.addEventListener('pointerup', () => {
 			guideExit();
 		});
 
@@ -509,3 +495,19 @@ function checkUnderRange() {
 		letter_page--;
 	}
 }
+
+github.addEventListener('pointerenter', () => {
+	gsap.fromTo(
+		github,
+		{ rotate: 0, ease: 'expo.inout' },
+		{ rotate: 360, ease: 'expo.inout' }
+	);
+});
+
+github.addEventListener('pointerleave', () => {
+	gsap.fromTo(
+		github,
+		{ rotate: 360, ease: 'expo.inout' },
+		{ rotate: 0, ease: 'expo.inout' }
+	);
+});
