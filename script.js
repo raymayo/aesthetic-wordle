@@ -384,7 +384,7 @@ fetch('words.txt')
 		for (let x of button) {
 			x.addEventListener('mousedown', function () {
 				if (word_container[word_page].children[4].textContent === '') {
-					x.className = 'keyboard-key active';
+					x.className = 'active';
 
 					gsap.fromTo(
 						x,
@@ -409,7 +409,7 @@ fetch('words.txt')
 
 		Backspace.addEventListener('mousedown', function () {
 			if (word_container[word_page].children[0].textContent !== '') {
-				Backspace.className = 'keyboard-backspace active';
+				Backspace.className += ' active';
 
 				playSFX(backspaceAudio);
 
