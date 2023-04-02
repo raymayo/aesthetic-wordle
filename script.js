@@ -55,31 +55,58 @@ fetch('words.txt')
 				if (word_page === 6) {
 					return;
 				} else {
-					if ( e.key.charCodeAt() <= 122 && e.key.charCodeAt() >= 97 && word_container[word_page].children[4].textContent === '' && guideContainer.style.display === 'none') {
+					if (
+						e.key.charCodeAt() <= 122 &&
+						e.key.charCodeAt() >= 97 &&
+						word_container[word_page].children[4].textContent === '' &&
+						guideContainer.style.display === 'none'
+					) {
 						playSFX(letterAudio);
 
 						if (word_page !== 6) {
 							word_container[word_page].children[letter_page].textContent =
 								e.key.toUpperCase();
-							gsap.fromTo( word_container[word_page].children[letter_page], { scale: 0.5, ease: 'expo.in' }, { scale: 1, ease: 'expo.out' });
+							gsap.fromTo(
+								word_container[word_page].children[letter_page],
+								{ scale: 0.5, ease: 'expo.in' },
+								{ scale: 1, ease: 'expo.out' }
+							);
 
 							for (let key of button) {
 								if (e.key.toUpperCase() === key.textContent) {
-									gsap.to(key,{ scale: 0.7, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' }); 
+									gsap.to(key, {
+										scale: 0.7,
+										backgroundColor: '#292929',
+										color: '#DDDDDD',
+										ease: 'expo.out',
+									});
 								}
 							}
 							checkOverRange();
 						}
 						return;
-					} else if ( e.key === 'Backspace' && word_container[word_page].children[0].textContent !== '') {
+					} else if (
+						e.key === 'Backspace' &&
+						word_container[word_page].children[0].textContent !== ''
+					) {
 						playSFX(backspaceAudio);
 						checkUnderRange();
 						word_container[word_page].children[letter_page].textContent = '';
 						scaleAnimation(word_container[word_page].children[letter_page]);
-						gsap.to('.keyboard-backspace',{ scale: 0.7, backgroundColor: '#DDDDDD', color: '#292929', ease: 'expo.out' }); 
+						gsap.to('.keyboard-backspace', {
+							scale: 0.7,
+							backgroundColor: '#DDDDDD',
+							color: '#292929',
+							ease: 'expo.out',
+						});
 					} else if (e.key === 'Enter' && word_page <= 5) {
 						playSFX(enterAudio);
-						gsap.to('.keyboard-enter',{ scale: .7, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' }); 
+						gsap.to('.keyboard-enter', {
+							scale: 0.7,
+							backgroundColor: '#292929',
+							color: '#DDDDDD',
+							ease: 'expo.out',
+						});
 						validateCompletion();
 					}
 
@@ -183,35 +210,61 @@ fetch('words.txt')
 				);
 				const numOfOccurrencesGuess = getNumOfOccurrencesInWord(guess, letter);
 				const letterPosition = getPositionOfOccurrence(guess, letter, i);
-				
-				for (e of button){
-					if ( numOfOccurrencesGuess > numOfOccurrencesSecret && letterPosition > numOfOccurrencesSecret) {
-						algoTl.to( word_container[word_page].children[i], { backgroundColor: 'rgb(149,163,179)' }, '<');
 
-						if ( word_container[word_page].children[i].textContent === e.textContent) {
-							if(e.style.backgroundColor === 'rgb(221,164,72)'){
+				for (e of button) {
+					if (
+						numOfOccurrencesGuess > numOfOccurrencesSecret &&
+						letterPosition > numOfOccurrencesSecret
+					) {
+						algoTl.to(
+							word_container[word_page].children[i],
+							{ backgroundColor: 'rgb(149,163,179)' },
+							'<'
+						);
+
+						if (
+							word_container[word_page].children[i].textContent ===
+							e.textContent
+						) {
+							if (e.style.backgroundColor === 'rgb(221,164,72)') {
 								return;
 							}
-							algoTl.to(e, { backgroundColor: "rgb(149,163,179)" }, "<");
+							algoTl.to(e, { backgroundColor: 'rgb(149,163,179)' }, '<');
 						}
 					} else {
 						if (array[i] === selectedWord[i]) {
-							algoTl.to( word_container[word_page].children[i], { backgroundColor: 'rgb(115,164,109)' }, '<');
-								if ( word_container[word_page].children[i].textContent === e.textContent) {
-									algoTl.to(e, { backgroundColor: 'rgb(115,164,109)' }, '<');
-								}
-							
+							algoTl.to(
+								word_container[word_page].children[i],
+								{ backgroundColor: 'rgb(115,164,109)' },
+								'<'
+							);
+							if (
+								word_container[word_page].children[i].textContent ===
+								e.textContent
+							) {
+								algoTl.to(e, { backgroundColor: 'rgb(115,164,109)' }, '<');
+							}
 						} else if (selectedWord.includes(array[i])) {
-							algoTl.to( word_container[word_page].children[i], { backgroundColor: 'rgb(221,164,72)' }, '<');
-	
-								if ( word_container[word_page].children[i].textContent === e.textContent) {
-									if ( e.style.backgroundColor !== 'rgb(68, 175, 105)' && e.style.backgroundColor !== '#ede0d4') {
-										algoTl.to(e, { backgroundColor: 'rgb(221,164,72)' }, '<');
-									}
+							algoTl.to(
+								word_container[word_page].children[i],
+								{ backgroundColor: 'rgb(221,164,72)' },
+								'<'
+							);
+
+							if (
+								word_container[word_page].children[i].textContent ===
+								e.textContent
+							) {
+								if (
+									e.style.backgroundColor !== 'rgb(68, 175, 105)' &&
+									e.style.backgroundColor !== '#ede0d4'
+								) {
+									algoTl.to(e, { backgroundColor: 'rgb(221,164,72)' }, '<');
 								}
+							}
 						} else {
 							return;
-						}	
+						}
 					}
 				}
 			}
@@ -238,54 +291,96 @@ fetch('words.txt')
 			popUpMessage.classList.add('pop-up');
 			popUpContainer.appendChild(popUpMessage);
 			popUpMessage.style.backgroundColor = bg;
-			popUpTimeline.fromTo('.pop-up', {display: 'block',opacity: 0,scale:0, ease: 'expo.out'}, {display: 'block',opacity: 1,scale:1, ease: 'expo.out'});
-			popUpTimeline.to('.pop-up', { delay: 3, display: 'none', opacity: 0, ease: 'expo.out',});
+			popUpTimeline.fromTo(
+				'.pop-up',
+				{ display: 'block', opacity: 0, scale: 0, ease: 'expo.out' },
+				{ display: 'block', opacity: 1, scale: 1, ease: 'expo.out' }
+			);
+			popUpTimeline.to('.pop-up', {
+				delay: 3,
+				display: 'none',
+				opacity: 0,
+				ease: 'expo.out',
+			});
 		}
 
 		function retry() {
 			if (word_page === 6) {
-				showEndScreen()
-				retryButton.textContent = `Play Again`
-			}else if(array.join('').toString() === selectedWord.join('').toString()){
-				showEndScreen()
-				retryButton.textContent = `Play Again`
-
+				showEndScreen();
+				retryButton.textContent = `Play Again`;
+			} else if (
+				array.join('').toString() === selectedWord.join('').toString()
+			) {
+				showEndScreen();
+				retryButton.textContent = `Play Again`;
 			}
 			return;
 		}
 
-		function showEndScreen(){
+		function showEndScreen() {
 			const endTl = gsap.timeline({ delay: 0.8 });
-			endTl.fromTo('#end-bg', {display: 'none', opacity: 0, ease: 'expo.out'}, {display: 'block', opacity: 0.5, ease: 'expo.out'});
-			endTl.fromTo('#end-container', {display: 'none',opacity: 0,scale: 0, ease: 'expo.out'}, {display: 'grid',opacity: 1,scale: 1,ease: 'expo.out'},'<');
+			endTl.fromTo(
+				'#end-bg',
+				{ display: 'none', opacity: 0, ease: 'expo.out' },
+				{ display: 'block', opacity: 0.5, ease: 'expo.out' }
+			);
+			endTl.fromTo(
+				'#end-container',
+				{ display: 'none', opacity: 0, scale: 0, ease: 'expo.out' },
+				{ display: 'grid', opacity: 1, scale: 1, ease: 'expo.out' },
+				'<'
+			);
 		}
 
 		retryButton.addEventListener('pointerdown', () => {
 			playSFX(enterAudio);
-			gsap.to( retryButton, { scale: 0.7, ease: 'expo.out' });
-		
+			gsap.to(retryButton, { scale: 0.7, ease: 'expo.out' });
 		});
 
 		retryButton.addEventListener('pointerleave', () => {
 			playSFX(enterAudio);
-			gsap.to( retryButton, { scale: 1, ease: 'expo.out' });
-		
+			gsap.to(retryButton, { scale: 1, ease: 'expo.out' });
 		});
 
 		retryButton.addEventListener('pointerup', () => {
 			letter_page = 0;
 			const retryTl = gsap.timeline();
-			retryTl.to( retryButton, { scale: 1, ease: 'expo.out' });
-			retryTl.to( '#end-container', { opacity: 0, display: 'none', ease: 'expo.out' }, '<.1');
-			retryTl.to( '#end-bg', { opacity: 0, display: 'none', ease: 'expo.out' }, '<.3');
+			retryTl.to(retryButton, { scale: 1, ease: 'expo.out' });
+			retryTl.to(
+				'#end-container',
+				{ opacity: 0, display: 'none', ease: 'expo.out' },
+				'<.1'
+			);
+			retryTl.to(
+				'#end-bg',
+				{ opacity: 0, display: 'none', ease: 'expo.out' },
+				'<.3'
+			);
 
 			for (e of button) {
-				gsap.to(e, { backgroundColor: '#EDE0D4', ease: 'expo.out', delay: 0.6, duration: 2});
+				gsap.to(e, {
+					backgroundColor: '#EDE0D4',
+					ease: 'expo.out',
+					delay: 0.6,
+					duration: 2,
+				});
 			}
 
-			retryTl.to(letterContainer, { scale: 0, ease: 'expo.out', stagger: { from: 'end', amount: 0.3 },});
-			retryTl.to(letterContainer, { backgroundColor: '#EDE0D4', textContent: '', ease: 'expo.out',});
-			retryTl.to(letterContainer, { scale: 1, ease: 'expo.out', stagger: { from: 'start', amount: 0.3 },});
+			retryTl.to(letterContainer, {
+				scale: 0,
+				ease: 'expo.out',
+				stagger: { from: 'end', amount: 0.3 },
+			});
+			retryTl.to(letterContainer, {
+				backgroundColor: '#EDE0D4',
+				textContent: '',
+				ease: 'expo.out',
+			});
+			retryTl.to(letterContainer, {
+				scale: 1,
+				ease: 'expo.out',
+				stagger: { from: 'start', amount: 0.3 },
+			});
 			getNewWord();
 
 			word_page = 0;
@@ -294,51 +389,85 @@ fetch('words.txt')
 		//MOBILE KEYBOARD EVENT LISTENER
 		enter.addEventListener('pointerdown', function () {
 			enterAudio.play();
-			gsap.to('.keyboard-enter',{ scale: 0.7, backgroundColor: '#DDDDDD', color: '#292929', ease: 'expo.out' }); 
+			gsap.to('.keyboard-enter', {
+				scale: 0.7,
+				backgroundColor: '#DDDDDD',
+				color: '#292929',
+				ease: 'expo.out',
+			});
 			validateCompletion();
 		});
 
-
 		enter.addEventListener('pointerup', function () {
-			gsap.to('.keyboard-enter',{ scale: 1, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' });
-			
+			gsap.to('.keyboard-enter', {
+				scale: 1,
+				backgroundColor: '#292929',
+				color: '#DDDDDD',
+				ease: 'expo.out',
+			});
 		});
 
 		enter.addEventListener('pointerleave', function () {
-			gsap.to('.keyboard-enter',{ scale: 1, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' });
+			gsap.to('.keyboard-enter', {
+				scale: 1,
+				backgroundColor: '#292929',
+				color: '#DDDDDD',
+				ease: 'expo.out',
+			});
 		});
-
-
 
 		for (let x of button) {
 			x.addEventListener('pointerdown', function () {
 				playSFX(letterAudio);
-				gsap.to( x, { scale: 0.7, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' });
+				gsap.to(x, {
+					scale: 0.7,
+					backgroundColor: '#292929',
+					color: '#DDDDDD',
+					ease: 'expo.out',
+				});
 				if (word_container[word_page].children[4].textContent === '') {
 					x.className = 'keyboard-key active';
-					word_container[word_page].children[letter_page].textContent = x.textContent;
-					gsap.fromTo( word_container[word_page].children[letter_page], { scale: 0.5, ease: 'expo.in' }, { scale: 1, ease: 'expo.out' });
+					word_container[word_page].children[letter_page].textContent =
+						x.textContent;
+					gsap.fromTo(
+						word_container[word_page].children[letter_page],
+						{ scale: 0.5, ease: 'expo.in' },
+						{ scale: 1, ease: 'expo.out' }
+					);
 					checkOverRange();
 				}
 			});
 		}
 
-
-
 		for (let x of button) {
 			x.addEventListener('pointerup', function () {
-				gsap.to( x, { scale: 1, backgroundColor: '#DDDDDD', color: '#292929', ease: 'expo.out' });
+				gsap.to(x, {
+					scale: 1,
+					backgroundColor: '#DDDDDD',
+					color: '#292929',
+					ease: 'expo.out',
+				});
 			});
 		}
 
 		for (let x of button) {
 			x.addEventListener('pointerleave', function () {
-				gsap.to( x, { scale: 1, backgroundColor: '#DDDDDD', color: '#292929', ease: 'expo.out' });
+				gsap.to(x, {
+					scale: 1,
+					backgroundColor: '#DDDDDD',
+					color: '#292929',
+					ease: 'expo.out',
+				});
 			});
 		}
 
 		Backspace.addEventListener('pointerdown', function () {
-			gsap.to( '.keyboard-backspace', { scale: 0.7, backgroundColor: '#DDDDDD', color: '#292929', ease: 'expo.out' });
+			gsap.to('.keyboard-backspace', {
+				scale: 0.7,
+				backgroundColor: '#DDDDDD',
+				color: '#292929',
+				ease: 'expo.out',
+			});
 			playSFX(backspaceAudio);
 			if (word_container[word_page].children[0].textContent !== '') {
 				Backspace.className = 'keyboard-backspace active';
@@ -352,34 +481,48 @@ fetch('words.txt')
 			}
 		});
 
-
 		Backspace.addEventListener('pointerup', function () {
-			gsap.to( '.keyboard-backspace', { scale: 1, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' });
+			gsap.to('.keyboard-backspace', {
+				scale: 1,
+				backgroundColor: '#292929',
+				color: '#DDDDDD',
+				ease: 'expo.out',
+			});
 		});
 
 		Backspace.addEventListener('pointerleave', function () {
-			gsap.to( '.keyboard-backspace', { scale: 1, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' });
+			gsap.to('.keyboard-backspace', {
+				scale: 1,
+				backgroundColor: '#292929',
+				color: '#DDDDDD',
+				ease: 'expo.out',
+			});
 		});
 
 		function guideExit() {
 			let exitAnimation = gsap.timeline();
-			
-			exitAnimation.to( exitButton, { scale: 1, ease: 'expo.out' });
-			exitAnimation.to( '#guide-container', { y: 100, opacity: 0, display: 'none', ease: 'expo.inout' }, '<.1');
-			exitAnimation.to('#guide-bg',{ opacity: 0, display: 'none', ease: 'expo.inout' },'<.3');
+
+			exitAnimation.to(exitButton, { scale: 1, ease: 'expo.out' });
+			exitAnimation.to(
+				'#guide-container',
+				{ y: 100, opacity: 0, display: 'none', ease: 'expo.inout' },
+				'<.1'
+			);
+			exitAnimation.to(
+				'#guide-bg',
+				{ opacity: 0, display: 'none', ease: 'expo.inout' },
+				'<.3'
+			);
 		}
 
 		exitButton.addEventListener('pointerdown', () => {
-			gsap.to( exitButton, { scale: 0.8, ease: 'expo.out' })
+			gsap.to(exitButton, { scale: 0.8, ease: 'expo.out' });
 			playSFX(enterAudio);
-			
 		});
-		
+
 		exitButton.addEventListener('pointerleave', () => {
-			gsap.to( exitButton, { scale: 1, ease: 'expo.out' })
+			gsap.to(exitButton, { scale: 1, ease: 'expo.out' });
 		});
-
-
 
 		exitButton.addEventListener('pointerup', () => {
 			guideExit();
@@ -457,28 +600,41 @@ github.addEventListener('pointerleave', () => {
 	);
 });
 
-
 setTimeout(() => {
-		//TYPE EVENTS FOR KEYBOARD
-		document.addEventListener('keyup', function (e) {
-
-				if ( e.key.charCodeAt() <= 122 && e.key.charCodeAt() >= 97 && guideContainer.style.display === 'none') {
-					if (word_page !== 6) {
-
-						for (let key of button) {
-							if (e.key.toUpperCase() === key.textContent) {
-								gsap.to(key,{ scale: 1, backgroundColor: '#DDDDDD', color: '#292929', ease: 'expo.out' }); 
-							}
-						}
-						
+	//TYPE EVENTS FOR KEYBOARD
+	document.addEventListener('keyup', function (e) {
+		if (
+			e.key.charCodeAt() <= 122 &&
+			e.key.charCodeAt() >= 97 &&
+			guideContainer.style.display === 'none'
+		) {
+			if (word_page !== 6) {
+				for (let key of button) {
+					if (e.key.toUpperCase() === key.textContent) {
+						gsap.to(key, {
+							scale: 1,
+							backgroundColor: '#DDDDDD',
+							color: '#292929',
+							ease: 'expo.out',
+						});
 					}
-					return;
-				} else if ( e.key === 'Backspace') {
-					gsap.to('.keyboard-backspace',{ scale: 1, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' }); 
-				} else if (e.key === 'Enter' && word_page <= 5) {
-					gsap.to('.keyboard-enter',{ scale: 1, backgroundColor: '#292929', color: '#DDDDDD', ease: 'expo.out' }); 
 				}
-		});
-	}, 1800);
-
-
+			}
+			return;
+		} else if (e.key === 'Backspace') {
+			gsap.to('.keyboard-backspace', {
+				scale: 1,
+				backgroundColor: '#292929',
+				color: '#DDDDDD',
+				ease: 'expo.out',
+			});
+		} else if (e.key === 'Enter' && word_page <= 5) {
+			gsap.to('.keyboard-enter', {
+				scale: 1,
+				backgroundColor: '#292929',
+				color: '#DDDDDD',
+				ease: 'expo.out',
+			});
+		}
+	});
+}, 1800);
