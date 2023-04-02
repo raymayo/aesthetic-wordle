@@ -228,7 +228,7 @@ footer {
 
 a {
 	text-decoration: none;
-	color: #73a46d;
+	color: var(--accentColor);
 }
 
 #end-bg {
