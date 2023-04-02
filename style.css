@@ -282,8 +282,8 @@ a {
     border-radius: .5rem;
     border: none;
     cursor: pointer;
-    background-color: #E7D6C5;
-    color: #171A21;
+    background-color: #DDDDDD;
+    color: var(--accentColor);
 }
 
 /* main > *{
