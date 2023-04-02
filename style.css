@@ -275,7 +275,7 @@ a {
 
 @media only screen and (max-width: 319px) {
 	:root {
-		/* display: none; */
+		display: none;
 	}
 }
 
