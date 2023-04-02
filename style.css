@@ -219,7 +219,7 @@ span {
 }
 
 footer {
-	font-size: 1.3rem;
+	font-size: 1em;
 	text-align: center;
 	color: #171a21;
 	/* transform: translate(0, -.5rem); */
@@ -278,11 +278,3 @@ a {
 		display: none;
 	}
 }
-
-/* @media only screen and (max-height: 800px) and (orientation:landscape) {
-    :root{
-
-        display: none;
-
-    }
-} */
