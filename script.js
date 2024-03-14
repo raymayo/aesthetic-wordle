@@ -259,8 +259,8 @@ fetch('words.txt')
 			popUpMessage.style.backgroundColor = bg;
 			popUpTimeline.fromTo(
 				'.pop-up',
-				{ display: 'block', opacity: 0, scale: 0, ease: 'expo.out' },
-				{ display: 'block', opacity: 1, scale: 1, ease: 'expo.out' }
+				{ display: 'block', opacity: 0, scale: 1, y: -100, ease: 'expo.out' },
+				{ display: 'block', opacity: 1, scale: 1, y: 0, ease: 'expo.out' }
 			);
 			popUpTimeline.to('.pop-up', {
 				delay: 3,
