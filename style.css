@@ -24,21 +24,22 @@ body {
 	display: grid;
 	overflow: hidden;
 	align-content: center;
-	justify-items: center;
+	align-items: center;
 	background-color: var(--bgColor);
+	padding: 0px 1rem;
 }
 
-main {
+/* main {
 	display: grid;
 	width: min(90%, 35rem);
 	height: 100%;
 	gap: 5px;
-}
+} */
 
 #container {
-	display: grid;
+	/* display: grid;
 	grid-template-rows: repeat(6, 1fr);
-	gap: 5px;
+	gap: 5px; */
 }
 
 /* #container > *{
@@ -49,7 +50,7 @@ main {
 	display: grid;
 	color: var(--accentColor);
 	grid-template-columns: repeat(5, 1fr);
-	gap: 5px;
+	/* gap: 5px; */
 }
 
 .letter-container {
@@ -129,7 +130,6 @@ header {
 	opacity: 0.6;
 	top: 0;
 	left: 0;
-	/* display: none; */
 }
 
 #guide-container {
@@ -164,11 +164,8 @@ header {
 #exit-btn {
 	display: grid;
 	place-items: center;
-	position: absolute;
-	top: 0;
-	right: 0;
-	width: clamp(2rem, calc(1.83rem + 0.87vw), 2.5rem);
-	height: clamp(2rem, calc(1.83rem + 0.87vw), 2.5rem);
+	/* width: clamp(2rem, calc(1.83rem + 0.87vw), 2.5rem);
+	height: clamp(2rem, calc(1.83rem + 0.87vw), 2.5rem); */
 	font-weight: bold;
 	font-size: 1.5rem;
 	margin: clamp(1rem, calc(0.83rem + 0.87vw), 1.5rem);
@@ -207,7 +204,9 @@ span {
 	text-align: center;
 	place-content: center;
 	place-items: center;
+	position: absolute;
 }
+
 .pop-up {
 	padding: 0.5rem;
 	display: grid;
@@ -216,20 +215,24 @@ span {
 	place-items: center;
 	border-radius: 0.3rem;
 	font-weight: bold;
+	box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
 }
 
 footer {
 	font-size: 1em;
 	text-align: center;
 	color: #171a21;
-	/* transform: translate(0, -.5rem); */
 	font-weight: bold;
+	display: flex;
+	gap: .25rem;
+	justify-content: center;
 }
 
 a {
 	text-decoration: none;
 	color: var(--accentColor);
 }
+
 
 #end-bg {
 	position: absolute;
@@ -245,8 +248,7 @@ a {
 #end-container {
 	display: grid;
 	width: min(85%, 45rem);
-	padding: clamp(2.5rem, calc(2.15rem + 1.74vw), 3.5rem)
-		clamp(1.5rem, calc(1.15rem + 1.74vw), 2.5rem);
+	padding: clamp(2.5rem, calc(2.15rem + 1.74vw), 3.5rem) clamp(1.5rem, calc(1.15rem + 1.74vw), 2.5rem);
 	row-gap: clamp(1rem, calc(0.83rem + 0.87vw), 1.5rem);
 	position: absolute;
 	top: 50%;
@@ -269,11 +271,14 @@ a {
 	color: var(--accentColor);
 }
 
-/* main > *{
-    border: solid 1px red;
-} */
 
 @media only screen and (max-width: 319px) {
+	:root {
+		display: none;
+	}
+}
+
+@media only screen and (orientation: landscape) {
 	:root {
 		display: none;
 	}

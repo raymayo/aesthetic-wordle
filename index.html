@@ -1,131 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/x-icon" href="./favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <title>Aesthetic Wordle</title>
-    <link rel="icon" type="image/x-icon" href="./fav.svg">
-</head>
-<body>
-    <main>
-        <header>
-                <h1>Aesthetic Wordle</h1>
-        </header>
-        <div id="container">
-            <div class="word-container" id="row-one">
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-            </div>
-            <div class="word-container" id="row-two">
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-            </div>
-            <div class="word-container" id="row-three">
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-            </div>
-            <div class="word-container" id="row-four">
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-            </div>
-            <div class="word-container" id="row-five">
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-            </div>
-            <div class="word-container" id="row-six">
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-                <div class="letter-container"></div>
-            </div>
-        </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/x-icon" href="./favicon.svg" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet" />
+		<link rel="stylesheet" href="style.css" />
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<script src="https://cdn.tailwindcss.com"></script>
+		<title>Aesthetic Wordle</title>
+		<link rel="icon" type="image/x-icon" href="./fav.svg" />
+	</head>
+	<body>
+		<main class="flex flex-col gap-3">
+			<header>
+				<h1 class="text-4xl font-black">Aesthetic Wordle</h1>
+			</header>
+			<div id="container" class="grid w-full h-full gap-1">
+				<div class="word-container gap-1" id="row-one">
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+				</div>
+				<div class="word-container gap-1" id="row-two">
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+				</div>
+				<div class="word-container gap-1" id="row-three">
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+				</div>
+				<div class="word-container gap-1" id="row-four">
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+				</div>
+				<div class="word-container gap-1" id="row-five">
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+				</div>
+				<div class="word-container gap-1" id="row-six">
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+					<div class="letter-container"></div>
+				</div>
+			</div>
+			<div class="keyboard">
+				<div class="row row1">
+					<button class="keyboard-key">Q</button>
+					<button class="keyboard-key">W</button>
+					<button class="keyboard-key">E</button>
+					<button class="keyboard-key">R</button>
+					<button class="keyboard-key">T</button>
+					<button class="keyboard-key">Y</button>
+					<button class="keyboard-key">U</button>
+					<button class="keyboard-key">I</button>
+					<button class="keyboard-key">O</button>
+					<button class="keyboard-key">P</button>
+					<button class="keyboard-backspace">&lt</button>
+				</div>
+				<div class="row row2">
+					<button class="keyboard-key">A</button>
+					<button class="keyboard-key">S</button>
+					<button class="keyboard-key">D</button>
+					<button class="keyboard-key">F</button>
+					<button class="keyboard-key">G</button>
+					<button class="keyboard-key">H</button>
+					<button class="keyboard-key">J</button>
+					<button class="keyboard-key">K</button>
+					<button class="keyboard-key">L</button>
+					<button class="keyboard-enter">^</button>
+				</div>
+				<div class="row row3">
+					<button class="keyboard-key">Z</button>
+					<button class="keyboard-key">X</button>
+					<button class="keyboard-key">C</button>
+					<button class="keyboard-key">V</button>
+					<button class="keyboard-key">B</button>
+					<button class="keyboard-key">N</button>
+					<button class="keyboard-key">M</button>
+				</div>
+			</div>
+			<footer>
+				Copyright © 2023 raymayo
+				<a
+					id="github"
+					class="fa fa-github"
+					style="font-size: 28px"
+					href="https://github.com/raymayo"
+					target="_blank"></a>
+			</footer>
+		</main>
+		<div id="end-bg"></div>
+		<div id="end-container">
+			<h1 id="endText"></h1>
+			<button id="retry-btn">Play Again?</button>
+		</div>
 
-                <div id="popUp-container"></div>
+		<div id="guide-bg"></div>
+		<div id="guide-container">
+			<div>
+				<h1 class="text-4xl font-black">How To Play</h1>
+				<h2 class="text-2xl font-semibold">Guess the Wordle in 6 tries.</h2>
+			</div>
+			<div id="game-rules">
+				<h3 class="text-4xl font-black">Example</h3>
+				<h4 class="font-semibold">
+					<span class="guide-colors-1 font-black">GREEN</span> means the letter
+					is in the word and in the correct spot.
+				</h4>
+				<h4 class="font-semibold">
+					<span class="guide-colors-2 font-black">YELLOW</span> means the letter
+					is in the word but in the wrong spot.
+				</h4>
+				<h4 class="font-semibold">
+					<span class="guide-colors-3 font-black">GREY</span> means the letter
+					is not in the word in any spot.
+				</h4>
+				<button id="exit-btn">Play Now</button>
+			</div>
+		</div>
+		<div id="popUp-container"></div>
 
-          <div class="keyboard">
-        <div class="row row1">
-            <button class="keyboard-key">Q</button>
-            <button class="keyboard-key">W</button>
-            <button class="keyboard-key">E</button>
-            <button class="keyboard-key">R</button>
-            <button class="keyboard-key">T</button>
-            <button class="keyboard-key">Y</button>
-            <button class="keyboard-key">U</button>
-            <button class="keyboard-key">I</button>
-            <button class="keyboard-key">O</button>
-            <button class="keyboard-key">P</button>
-            <button class="keyboard-backspace">&lt</button>
-        </div>
-        <div class="row row2">
-            <button class="keyboard-key">A</button>
-            <button class="keyboard-key">S</button>
-            <button class="keyboard-key">D</button>
-            <button class="keyboard-key">F</button>
-            <button class="keyboard-key">G</button>
-            <button class="keyboard-key">H</button>
-            <button class="keyboard-key">J</button>
-            <button class="keyboard-key">K</button>
-            <button class="keyboard-key">L</button>
-            <button class="keyboard-enter">^</button>
-        </div>
-            <div class="row row3">
-                <button class="keyboard-key">Z</button>
-                <button class="keyboard-key">X</button>
-                <button class="keyboard-key">C</button>
-                <button class="keyboard-key">V</button>
-                <button class="keyboard-key">B</button>
-                <button class="keyboard-key">N</button>
-                <button class="keyboard-key">M</button>
-            </div>
-    </div>
-    <footer>Copyright © 2023 raymayo  <a id="github" class="fa fa-github" style="font-size: 28px" href="https://github.com/raymayo" target="_blank"></a></footer>
-    </main>
-        <div id="end-bg"></div>
-         <div id="end-container">
-            <h1 id="endText"></h1>
-            <button id="retry-btn">Play Again?</button>
-         </div>
-
-        <div id="guide-bg"></div>
-         <div id="guide-container">
-            <div>
-            <h1>How To Play</h1>
-            <h2>Guess the Wordle in 6 tries.</h2>
-            </div>
-            <div id="game-rules">
-            <h3>Example</h3>
-            <h4><span class="guide-colors-1">GREEN</span> means the letter is in the word and in the correct spot.</h4>
-            <h4><span class="guide-colors-2">YELLOW</span> means the letter is in the word but in the wrong spot.</h4>
-            <h4><span class="guide-colors-3">GREY</span> means the letter is not in the word in any spot.</h4>
-            <button id="exit-btn">X</button>
-            </div>
-         </div>
-
-
-
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
-    <script src="script.js"></script>
-</body>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.1/gsap.min.js"></script>
+		<script src="script.js"></script>
+	</body>
 </html>

@@ -189,7 +189,7 @@ fetch('words.txt')
 
 		//FUNCTION FOR GIVING THE RIGHT COLORS IN THE INPUT
 		function letterAlgo() {
-			let algoTl = gsap.timeline({ delay: 0.5, ease: 'expo.inout' });
+			const algoTl = gsap.timeline({ delay: 0.5, ease: 'expo.inout' });
 
 			gsap.to(word_container[word_page].children, {
 				scale: 0,
@@ -199,74 +199,39 @@ fetch('words.txt')
 			});
 
 			for (let i = 0; i < 5; i++) {
-				let box = array.join('');
-				let guess = array.join('');
-				let letter = box[i];
-				let secret = selectedWord.join('');
-
-				const numOfOccurrencesSecret = getNumOfOccurrencesInWord(
-					secret,
-					letter
-				);
+				const letter = array[i];
+				const secret = selectedWord.join('');
+				const guess = array.join('');
+				const numOfOccurrencesSecret = getNumOfOccurrencesInWord(secret, letter);
 				const numOfOccurrencesGuess = getNumOfOccurrencesInWord(guess, letter);
 				const letterPosition = getPositionOfOccurrence(guess, letter, i);
 
-				for (e of button) {
-					if (
-						numOfOccurrencesGuess > numOfOccurrencesSecret &&
-						letterPosition > numOfOccurrencesSecret
-					) {
-						algoTl.to(
-							word_container[word_page].children[i],
-							{ backgroundColor: 'rgb(149,163,179)' },
-							'<'
-						);
+				for (const e of button) {
+					if (numOfOccurrencesGuess > numOfOccurrencesSecret && letterPosition > numOfOccurrencesSecret) {
+						algoTl.to(word_container[word_page].children[i], { backgroundColor: 'rgb(149,163,179)' }, '<');
 
-						if (
-							word_container[word_page].children[i].textContent ===
-							e.textContent
-						) {
-							if (e.style.backgroundColor === 'rgb(221,164,72)') {
-								return;
+						if (word_container[word_page].children[i].textContent === e.textContent && e.style.backgroundColor !== 'rgb(221,164,72)') {
+							if (e.style.backgroundColor !== 'rgb(115,164,109)') {
+								algoTl.to(e, { backgroundColor: 'rgb(149,163,179)' }, '<');
 							}
-							algoTl.to(e, { backgroundColor: 'rgb(149,163,179)' }, '<');
 						}
 					} else {
 						if (array[i] === selectedWord[i]) {
-							algoTl.to(
-								word_container[word_page].children[i],
-								{ backgroundColor: 'rgb(115,164,109)' },
-								'<'
-							);
-							if (
-								word_container[word_page].children[i].textContent ===
-								e.textContent
-							) {
+							algoTl.to(word_container[word_page].children[i], { backgroundColor: 'rgb(115,164,109)' }, '<');
+							if (word_container[word_page].children[i].textContent === e.textContent && e.style.backgroundColor !== 'rgb(221,164,72)' && e.style.backgroundColor !== 'rgb(149,163,179)') {
 								algoTl.to(e, { backgroundColor: 'rgb(115,164,109)' }, '<');
 							}
 						} else if (selectedWord.includes(array[i])) {
-							algoTl.to(
-								word_container[word_page].children[i],
-								{ backgroundColor: 'rgb(221,164,72)' },
-								'<'
-							);
-
-							if (
-								word_container[word_page].children[i].textContent ===
-								e.textContent
-							) {
-								if (
-									e.style.backgroundColor !== 'rgb(68, 175, 105)' &&
-									e.style.backgroundColor !== '#ede0d4'
-								) {
-									algoTl.to(e, { backgroundColor: 'rgb(221,164,72)' }, '<');
-								}
+							algoTl.to(word_container[word_page].children[i], { backgroundColor: 'rgb(221,164,72)' }, '<');
+							if (word_container[word_page].children[i].textContent === e.textContent && e.style.backgroundColor !== 'rgb(68, 175, 105)' && e.style.backgroundColor !== '#ede0d4' && e.style.backgroundColor !== 'rgb(149,163,179)') {
+								algoTl.to(e, { backgroundColor: 'rgb(221,164,72)' }, '<');
 							}
 						} else {
 							return;
 						}
 					}
 				}
+
 			}
 
 			gsap.to(word_container[word_page].children, {
@@ -279,6 +244,7 @@ fetch('words.txt')
 
 			word_page++;
 		}
+
 
 		//POP UP MESSAGE
 		function popUp(message, bg) {
@@ -638,3 +604,7 @@ setTimeout(() => {
 		}
 	});
 }, 1800);
+
+
+
+
