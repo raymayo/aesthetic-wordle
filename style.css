@@ -136,8 +136,6 @@ header {
 	display: grid;
 	width: min(85%, 45rem);
 	height: min(85%, 35rem);
-	padding: clamp(1.5rem, calc(1.15rem + 1.74vw), 2.5rem);
-	row-gap: clamp(1rem, calc(0.83rem + 0.87vw), 1.5rem);
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -148,6 +146,7 @@ header {
 	overflow: hidden;
 	align-content: center;
 	color: var(--accentColor);
+	padding: 2rem 1.5rem;
 }
 
 #game-rules {
@@ -168,7 +167,7 @@ header {
 	height: clamp(2rem, calc(1.83rem + 0.87vw), 2.5rem); */
 	font-weight: bold;
 	font-size: 1.5rem;
-	margin: clamp(1rem, calc(0.83rem + 0.87vw), 1.5rem);
+	padding: .5rem;
 	border-radius: 0.3rem;
 	border: none;
 	cursor: pointer;
@@ -176,7 +175,7 @@ header {
 	color: var(--accentColor);
 }
 
-span {
+.guide-color {
 	padding: 5px;
 	border-radius: 5px;
 }
@@ -280,6 +279,44 @@ a {
 
 @media only screen and (orientation: landscape) {
 	:root {
-		display: none;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
+
+	body {
+		margin: auto;
+		width: 30vw;
+	}
+}
+
+
+@media only screen and (min-width: 800px) and (max-width: 1100px) {
+
+	:root {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	body {
+		margin: auto;
+		width: 45vw;
+	}
+
+}
+
+@media only screen and (min-width: 520px) and (max-width: 800px) {
+
+	:root {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	body {
+		margin: auto;
+		width: 60vw;
+	}
+
 }

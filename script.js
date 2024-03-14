@@ -605,6 +605,12 @@ setTimeout(() => {
 	});
 }, 1800);
 
+const date = new Date();
+let year = date.getFullYear();
+let copyrightYear = document.querySelector('#cYear').textContent = year;
+
+
+
 
 
 
