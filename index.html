@@ -115,7 +115,11 @@
 		</main>
 		<div id="end-bg"></div>
 		<div id="end-container">
-			<h1 id="endText"></h1>
+			<h2 id="endText" class="font-semibold text-xl">The word is:</h2>
+			<h1
+				id="word-selected"
+				class="font-black text-2xl guide-color guide-colors-1"></h1>
+			<h2 id="word-meaning" class="font-semibold text-center text-base"></h2>
 			<button id="retry-btn">Play Again?</button>
 		</div>
 
@@ -125,8 +129,7 @@
 				<h1 class="text-4xl font-black">How To Play</h1>
 				<h2 class="text-2xl font-semibold">Guess the Wordle in 6 tries.</h2>
 			</div>
-			<div id="game-rules">
-				<h3 class="text-4xl font-black">Example</h3>
+			<div id="game-rules" class="pt-4">
 				<h4 class="font-semibold">
 					<span class="guide-color guide-colors-1 font-black">GREEN</span> means
 					the letter is in the word and in the correct spot.

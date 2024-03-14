@@ -36,6 +36,7 @@ fetch('words.txt')
 	.then((response) => response.text())
 	.then((text) => (word = text))
 	.then(function (word) {
+
 		//FUNCTION FOR GETTING WORD
 		function getNewWord() {
 			capitalText = word.toUpperCase();
@@ -140,7 +141,6 @@ fetch('words.txt')
 				word_page > 0
 			) {
 				letterAlgo();
-				popUp(`The Word is ${selectedWord.join('')}`, '#DDA448');
 				retry();
 			} else {
 				checkIncomplete();
@@ -325,7 +325,7 @@ fetch('words.txt')
 
 			for (e of button) {
 				gsap.to(e, {
-					backgroundColor: '#EDE0D4',
+					backgroundColor: '#dddddd',
 					ease: 'expo.out',
 					delay: 0.6,
 					duration: 2,
@@ -338,7 +338,7 @@ fetch('words.txt')
 				stagger: { from: 'end', amount: 0.3 },
 			});
 			retryTl.to(letterContainer, {
-				backgroundColor: '#EDE0D4',
+				backgroundColor: '#dddddd',
 				textContent: '',
 				ease: 'expo.out',
 			});
@@ -506,6 +506,9 @@ fetch('words.txt')
 				{ scale: 1, ease: 'expo.out' }
 			);
 		}
+
+
+		wordDefinition();
 	});
 
 //START UP ANIMATION
@@ -609,6 +612,57 @@ const date = new Date();
 let year = date.getFullYear();
 let copyrightYear = document.querySelector('#cYear').textContent = year;
 
+
+
+
+// fetch(url)
+// 	.then(response => {
+// 		if (!response.ok) {
+// 			throw new Error('Network response was not ok');
+// 		}
+// 		return response.json();
+// 	})
+// 	.then(data => {
+// 		if (data.title && data.title === "No Definitions Found") {
+// 			document.getElementById("definition").innerText = "No definition found for this word";
+// 		} else {
+// 			const definition = data[0].meanings[0].definitions[0].definition;
+// 			document.getElementById("definition").innerText = definition;
+// 		}
+// 	})
+// 	.catch(error => {
+// 		console.error('There was a problem with the fetch operation:', error);
+// 		document.getElementById("definition").innerText = "An error occurred while fetching the definition";
+// 	});
+
+function wordDefinition() {
+	let wordDef = selectedWord.toString();
+	let meaningContent = document.getElementById('word-meaning')
+	let wordContent = document.getElementById('word-selected')
+	wordDef = wordDef.replace(/,/g, '');
+	console.log(wordDef.replace(/,/g, ''));
+
+	const url = `https://api.dictionaryapi.dev/api/v2/entries/en/${wordDef}`;
+
+	fetch(url)
+		.then(response => {
+			if (!response.ok) {
+				throw new Error('Network response was not ok');
+			}
+			return response.json(); // Parse the JSON from the response
+		})
+		.then(data => {
+			// Do something with the parsed data
+			console.log(data[0].meanings[0].definitions[0].definition);
+			wordContent.textContent = wordDef;
+			meaningContent.textContent = data[0].meanings[0].definitions[0].definition;
+		})
+		.catch(error => {
+			// Handle errors
+			console.error('There was a problem with the fetch operation:', error);
+		});
+
+}
 
 
 
